@@ -1,0 +1,82 @@
+definitions:
+  domain.LoginDTO:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  domain.SignupDTO:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      surname:
+        type: string
+    type: object
+  web.LoginResponse:
+    properties:
+      access_token:
+        type: string
+    type: object
+  web.SuccessResponse:
+    properties:
+      data: {}
+      status:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: API para la gestión de turnos de una clínica dental.
+  title: Desafío II - Backend Go
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Takes and verify user credentials. Returns an access token for
+        the user.
+      parameters:
+      - description: User credentials
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.LoginDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.LoginResponse'
+      summary: Existing user login
+      tags:
+      - users
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: Takes user information and store in DB. Return saved user.
+      parameters:
+      - description: User register information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.SignupDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+      summary: Register a new user
+      tags:
+      - users
+swagger: "2.0"
