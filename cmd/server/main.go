@@ -5,7 +5,6 @@ import (
 
 	"github.com/ncondezo/final/cmd/server/router"
 	"github.com/ncondezo/final/docs"
-	"github.com/ncondezo/final/pkg/security"
 	"github.com/ncondezo/final/pkg/store"
 
 	"github.com/gin-gonic/gin"
@@ -20,12 +19,6 @@ const (
 // @version 1.0
 // @description API para la gestión de turnos de una clínica dental.
 func main() {
-
-	if err := security.LoadCertificates(
-		"cmd/certificates/private-key.rsa",
-		"cmd/certificates/public-key.rsa.pub"); err != nil {
-		log.Fatal(err)
-	}
 
 	store.NewMySQLConnection()
 	database := store.GetConnection()
