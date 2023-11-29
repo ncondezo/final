@@ -19,17 +19,14 @@ func GetConnection() *sql.DB {
 }
 
 func NewMySQLConnection() {
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	database := os.Getenv("DB_NAME")
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	protocol := os.Getenv("DB_PROTOCOL")
+	user := os.Getenv("MYSQL_USER")
+	password := os.Getenv("MYSQL_PASSWORD")
+	database := os.Getenv("MYSQL_DATABASE")
 	once.Do(func() {
 		var err error
 		db, err = sql.Open(
 			"mysql",
-			user+":"+password+"@"+protocol+"("+host+":"+port+")/"+database+"?parseTime=true")
+			user+":"+password+"@tcp(localhost:3306)/"+database+"?parseTime=true")
 		if err != nil {
 			log.Fatalf("Error opening database: %v", err)
 		}
