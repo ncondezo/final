@@ -23,7 +23,7 @@ func NewMyRepository(db *sql.DB) Repository {
 	return &repositorymysql{db: db}
 }
 
-// Create is a method that creates a new pacient.
+// Create is a method that creates a new patient.
 func (r *repositorymysql) Create(ctx context.Context, patient domain.Patient) (domain.Patient, error) {
 	statement, err := r.db.Prepare(QueryInsertPatient)
 	if err != nil {
@@ -56,7 +56,7 @@ func (r *repositorymysql) Create(ctx context.Context, patient domain.Patient) (d
 
 }
 
-// GetByID is a method that returns a pacient by ID.
+// GetByID is a method that returns a patient by ID.
 func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Patient, error) {
 	row := r.db.QueryRow(QueryGetPatientById, id)
 
@@ -77,7 +77,7 @@ func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Patient, 
 	return patient, nil
 }
 
-// Update is a method that updates a pacient by ID.
+// Update is a method that updates a patient by ID.
 func (r *repositorymysql) Update(
 	ctx context.Context,
 	patient domain.Patient,
@@ -112,7 +112,7 @@ func (r *repositorymysql) Update(
 
 }
 
-// Delete is a method that deletes a pacient by ID.
+// Delete is a method that deletes a patient by ID.
 func (r *repositorymysql) Delete(ctx context.Context, id int) error {
 	result, err := r.db.Exec(QueryDeletePatient, id)
 	if err != nil {
@@ -131,7 +131,7 @@ func (r *repositorymysql) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
-// Patch is a method that updates a pacient by ID.
+// Patch is a method that updates a patient by ID.
 func (r *repositorymysql) Patch(
 	ctx context.Context,
 	patient domain.Patient,
