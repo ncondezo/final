@@ -44,6 +44,15 @@ Abrir en visual studio el proyecto
   docker compose up 
 ```
 
+**Ejecución de la api en Go desde terminal**
+
+    Posicionarse en la raiz de la aplicacion y ejecutar el siguiente comando para correr la Api.
+
+```bash
+  go run ./cmd/server/main.go
+```
+
+
 
 
 
