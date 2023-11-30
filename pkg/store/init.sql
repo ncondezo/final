@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS `dental_clinic`;
 USE `dental_clinic`;
 
-CREATE TABLE users
+CREATE TABLE IF NOT EXISTS users
 (
     id       VARCHAR(100) NOT NULL,
     name     VARCHAR(25)  NOT NULL,
