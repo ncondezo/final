@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS dentists
 
 CREATE TABLE IF NOT EXISTS patient
 (
-    id            VARCHAR(100) NOT NULL,
+    id            INT NOT NULL,
     name          VARCHAR(25)  NOT NULL,
     lastname      VARCHAR(25)  NOT NULL,
     address       VARCHAR(250) NOT NULL,
@@ -38,4 +38,5 @@ CREATE TABLE IF NOT EXISTS patient
         PRIMARY KEY (id),
     CONSTRAINT patient_dni
         UNIQUE (dni)
+        
 );
