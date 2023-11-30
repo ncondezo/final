@@ -5,7 +5,10 @@ import (
 	"net/http"
 
 	authController "github.com/ncondezo/final/cmd/server/handler/auth"
+	dentistControlle "github.com/ncondezo/final/cmd/server/handler/dentists"
+	dentist "github.com/ncondezo/final/internal/dentists"
 	user "github.com/ncondezo/final/internal/user"
+	"github.com/ncondezo/final/pkg/middleware"
 	_ "github.com/ncondezo/final/pkg/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -59,5 +62,23 @@ func (router *router) buildAuthGroup() {
 	authGroup := router.apiGroup.Group("/auth")
 	authGroup.POST("/signup", controller.Signup())
 	authGroup.POST("/login", controller.Login())
+
+}
+
+func (router *router) buildDentists() {
+
+	
+	repository := dentist.NewMySqlRepository(router.db)
+	service := dentist.NewDentistService(repository)
+	controller := dentistControlle.NewDentistController(service)
+
+	pacientGroup := router.apiGroup.Group("/pacient")
+	{
+		pacientGroup.POST("", middleware.Authorization(), controller.HandlerCreate())
+		pacientGroup.GET("/:id", middleware.Authorization(), controller.HandlerGetById())
+		pacientGroup.PUT("/:id", middleware.Authorization(), controller.HandlerUpdate())
+		pacientGroup.PATCH("/:id", middleware.Authorization(), controller.HandlerPatch())
+		pacientGroup.DELETE("/:id", middleware.Authorization(), controller.HandlerDelete())
+	}
 
 }
