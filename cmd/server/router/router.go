@@ -35,6 +35,7 @@ func (router *router) BuildRoutes() {
 	router.buildPingEndpoint()
 	router.buildSwaggerEndpoint()
 	router.buildAuthGroup()
+	router.buildDentists()
 }
 
 func (router *router) setApiGroup() {
@@ -67,18 +68,17 @@ func (router *router) buildAuthGroup() {
 
 func (router *router) buildDentists() {
 
-	
 	repository := dentist.NewMySqlRepository(router.db)
 	service := dentist.NewDentistService(repository)
 	controller := dentistControlle.NewDentistController(service)
 
-	pacientGroup := router.apiGroup.Group("/pacient")
+	dentistGroup := router.apiGroup.Group("/dentist")
 	{
-		pacientGroup.POST("", middleware.Authorization(), controller.HandlerCreate())
-		pacientGroup.GET("/:id", middleware.Authorization(), controller.HandlerGetById())
-		pacientGroup.PUT("/:id", middleware.Authorization(), controller.HandlerUpdate())
-		pacientGroup.PATCH("/:id", middleware.Authorization(), controller.HandlerPatch())
-		pacientGroup.DELETE("/:id", middleware.Authorization(), controller.HandlerDelete())
+		dentistGroup.POST("", middleware.Authorization(), controller.HandlerCreate())
+		dentistGroup.GET("/:id", middleware.Authorization(), controller.HandlerGetById())
+		dentistGroup.PUT("/:id", middleware.Authorization(), controller.HandlerUpdate())
+		dentistGroup.PATCH("/:id", middleware.Authorization(), controller.HandlerPatch())
+		dentistGroup.DELETE("/:id", middleware.Authorization(), controller.HandlerDelete())
 	}
 
 }
