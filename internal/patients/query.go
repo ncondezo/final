@@ -1,11 +1,11 @@
 package patients
 
 var (
-	QueryInsertPatient = `INSERT INTO patient(id,name,lastname,address,dni,dateup)
+	QueryInsertPatient = `INSERT INTO patients(id,name,lastname,address,dni,dateup)
 	VALUES(?,?,?,?,?,?)`
-	QueryDeletePatient  = `DELETE FROM patient WHERE id = ?`
+	QueryDeletePatient  = `DELETE FROM patients WHERE id = ?`
 	QueryGetPatientById = `SELECT id, name, lastname, address, dni, dateup
-	FROM patient WHERE id = ?`
-	QueryUpdatePatient = `UPDATE patient SET name = ?, lastname = ?, address = ?, dni = ?, dateup = ?
+	FROM patients WHERE id = ?`
+	QueryUpdatePatient = `UPDATE patients SET name = ?, lastname = ?, address = ?, dni = ?, dateup = ?
 	WHERE id = ?`
 )
