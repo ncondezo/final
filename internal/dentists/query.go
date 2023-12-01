@@ -1,8 +1,8 @@
 package dentists
 
-var(
-	QueryInsertDentist = `INSERT INTO storage.products(name,last_name,registration) VALUES(?,?,?)`
-	QueryGetDentistById = `SELECT name, last_name, registration FROM storage.dentists WHERE id = ?`
-	QueryUpdateDentist = `UPDATE storage.dentists SET name = ?, last_name = ?, registration = ? WHERE id = ?`
-	QueryDeleteDentist  = `DELETE FROM storage.dentists WHERE id = ?`
+var (
+	QueryInsertDentist  = `INSERT INTO dentists(id,name,surname,registry) VALUES(?,?,?,?)`
+	QueryGetDentistById = `SELECT name, surname, registry FROM dentists WHERE id = ?`
+	QueryUpdateDentist  = `UPDATE dentists SET name = ?, surname = ?, registry = ? WHERE id = ?`
+	QueryDeleteDentist  = `DELETE FROM dentists WHERE id = ?`
 )

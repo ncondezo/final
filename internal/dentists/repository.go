@@ -33,8 +33,9 @@ func (r *repositorymysql) Create(ctx context.Context, dentist domain.Dentist) (d
 	defer statement.Close()
 
 	result, err := statement.Exec(
-		dentist.LastName,
+		dentist.Id,
 		dentist.Name,
+		dentist.LastName,
 		dentist.Registration,
 	)
 
@@ -59,8 +60,8 @@ func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Dentist, 
 	var dentist domain.Dentist
 	err := row.Scan(
 		&dentist.Id,
-		&dentist.LastName,
 		&dentist.Name,
+		&dentist.LastName,
 		&dentist.Registration,
 	)
 
@@ -84,8 +85,8 @@ func (r *repositorymysql) Update(
 	defer statement.Close()
 
 	result, err := statement.Exec(
-		dentist.LastName,
 		dentist.Name,
+		dentist.LastName,
 		dentist.Registration,
 	)
 
@@ -116,8 +117,8 @@ func (r *repositorymysql) Patch(
 	defer statement.Close()
 
 	result, err := statement.Exec(
-		dentist.LastName,
 		dentist.Name,
+		dentist.LastName,
 		dentist.Registration,
 	)
 
