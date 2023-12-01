@@ -5,6 +5,9 @@ import (
 	"net/http"
 
 	authController "github.com/ncondezo/final/cmd/server/handler/auth"
+
+	dentistControlle "github.com/ncondezo/final/cmd/server/handler/dentists"
+	dentist "github.com/ncondezo/final/internal/dentists"
 	patientController "github.com/ncondezo/final/cmd/server/handler/patient"
 	patient "github.com/ncondezo/final/internal/patients"
 	user "github.com/ncondezo/final/internal/user"
@@ -35,6 +38,7 @@ func (router *router) BuildRoutes() {
 	router.buildPingEndpoint()
 	router.buildSwaggerEndpoint()
 	router.buildAuthGroup()
+	router.buildDentists()
 	router.buildPatients()
 }
 
@@ -64,6 +68,22 @@ func (router *router) buildAuthGroup() {
 	authGroup.POST("/signup", controller.Signup())
 	authGroup.POST("/login", controller.Login())
 
+}
+
+func (router *router) buildDentists() {
+
+	repository := dentist.NewMySqlRepository(router.db)
+	service := dentist.NewDentistService(repository)
+	controller := dentistControlle.NewDentistController(service)
+
+	dentistGroup := router.apiGroup.Group("/dentist")
+	{
+		dentistGroup.POST("", middleware.Authorization(), controller.HandlerCreate())
+		dentistGroup.GET("/:id", middleware.Authorization(), controller.HandlerGetById())
+		dentistGroup.PUT("/:id", middleware.Authorization(), controller.HandlerUpdate())
+		dentistGroup.PATCH("/:id", middleware.Authorization(), controller.HandlerPatch())
+		dentistGroup.DELETE("/:id", middleware.Authorization(), controller.HandlerDelete())
+  }
 }
 
 func (router *router) buildPatients() {
