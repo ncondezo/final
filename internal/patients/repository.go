@@ -80,9 +80,9 @@ func (r *repository) GetByID(ctx context.Context, id int) (domain.Patient, error
 		return domain.Patient{}, ErrNotFound
 	}
 	if err != nil {
-		return domain.Patient{}, err
+		return domain.Patient{}, ErrExecStatement
 	}
-	
+
 	return patient, nil
 }
 
@@ -90,7 +90,7 @@ func (r *repository) GetByID(ctx context.Context, id int) (domain.Patient, error
 func (r *repository) Update(ctx context.Context, patient domain.Patient, id int) (domain.Patient, error) {
 	statement, err := r.db.Prepare(QueryUpdatePatient)
 	if err != nil {
-		return domain.Patient{}, err
+		return domain.Patient{}, ErrPrepareStatement
 	}
 
 	defer statement.Close()
@@ -104,12 +104,16 @@ func (r *repository) Update(ctx context.Context, patient domain.Patient, id int)
 	)
 
 	if err != nil {
+		return domain.Patient{}, ErrExecStatement
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
 		return domain.Patient{}, err
 	}
 
-	_, err = result.RowsAffected()
-	if err != nil {
-		return domain.Patient{}, err
+	if rowsAffected < 1 {
+		return domain.Patient{}, ErrNotFound
 	}
 
 	patient.Id = id
@@ -121,7 +125,7 @@ func (r *repository) Update(ctx context.Context, patient domain.Patient, id int)
 func (r *repository) Patch(ctx context.Context, dni string, id int) (domain.Patient, error) {
 	statement, err := r.db.Prepare(QueryPatchPatient)
 	if err != nil {
-		return domain.Patient{}, err
+		return domain.Patient{}, ErrPrepareStatement
 	}
 
 	defer statement.Close()
@@ -129,12 +133,16 @@ func (r *repository) Patch(ctx context.Context, dni string, id int) (domain.Pati
 	result, err := statement.Exec(dni, id)
 
 	if err != nil {
+		return domain.Patient{}, ErrExecStatement
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
 		return domain.Patient{}, err
 	}
 
-	_, err = result.RowsAffected()
-	if err != nil {
-		return domain.Patient{}, err
+	if rowsAffected < 1 {
+		return domain.Patient{}, ErrNotFound
 	}
 
 	return domain.Patient{}, nil
@@ -144,7 +152,7 @@ func (r *repository) Patch(ctx context.Context, dni string, id int) (domain.Pati
 func (r *repository) Delete(ctx context.Context, id int) error {
 	result, err := r.db.Exec(QueryDeletePatient, id)
 	if err != nil {
-		return err
+		return ErrExecStatement
 	}
 
 	rowsAffected, err := result.RowsAffected()

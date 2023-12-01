@@ -76,9 +76,9 @@ func (r *repository) GetByID(ctx context.Context, id int) (domain.Dentist, error
 		return domain.Dentist{}, ErrNotFound
 	}
 	if err != nil {
-		return domain.Dentist{}, err
+		return domain.Dentist{}, ErrExecStatement
 	}
-	
+
 	return dentist, nil
 }
 
@@ -86,7 +86,7 @@ func (r *repository) GetByID(ctx context.Context, id int) (domain.Dentist, error
 func (r *repository) Update(ctx context.Context, dentist domain.Dentist, id int) (domain.Dentist, error) {
 	statement, err := r.db.Prepare(QueryUpdateDentist)
 	if err != nil {
-		return domain.Dentist{}, err
+		return domain.Dentist{}, ErrPrepareStatement
 	}
 
 	defer statement.Close()
@@ -99,12 +99,16 @@ func (r *repository) Update(ctx context.Context, dentist domain.Dentist, id int)
 	)
 
 	if err != nil {
+		return domain.Dentist{}, ErrExecStatement
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
 		return domain.Dentist{}, err
 	}
 
-	_, err = result.RowsAffected()
-	if err != nil {
-		return domain.Dentist{}, err
+	if rowsAffected < 1 {
+		return domain.Dentist{}, ErrNotFound
 	}
 
 	dentist.Id = id
@@ -116,7 +120,7 @@ func (r *repository) Update(ctx context.Context, dentist domain.Dentist, id int)
 func (r *repository) Patch(ctx context.Context, registry string, id int) (domain.Dentist, error) {
 	statement, err := r.db.Prepare(QueryPatchDentist)
 	if err != nil {
-		return domain.Dentist{}, err
+		return domain.Dentist{}, ErrPrepareStatement
 	}
 
 	defer statement.Close()
@@ -124,12 +128,16 @@ func (r *repository) Patch(ctx context.Context, registry string, id int) (domain
 	result, err := statement.Exec(registry, id)
 
 	if err != nil {
+		return domain.Dentist{}, ErrExecStatement
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
 		return domain.Dentist{}, err
 	}
 
-	_, err = result.RowsAffected()
-	if err != nil {
-		return domain.Dentist{}, err
+	if rowsAffected < 1 {
+		return domain.Dentist{}, ErrNotFound
 	}
 
 	return domain.Dentist{}, nil
@@ -139,7 +147,7 @@ func (r *repository) Patch(ctx context.Context, registry string, id int) (domain
 func (r *repository) Delete(ctx context.Context, id int) error {
 	result, err := r.db.Exec(QueryDeleteDentist, id)
 	if err != nil {
-		return err
+		return ErrExecStatement
 	}
 
 	rowsAffected, err := result.RowsAffected()

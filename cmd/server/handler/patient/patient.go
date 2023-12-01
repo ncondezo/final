@@ -111,16 +111,17 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 			return
 		}
 
-		id := ctx.Param("id")
-
-		idInt, err := strconv.Atoi(id)
-
+		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
-			web.NewErrorResponse(ctx, http.StatusBadRequest, "bad request param")
+			web.NewErrorResponse(ctx, http.StatusBadRequest, "invalid id")
 			return
 		}
 
-		patient, err := c.service.Update(ctx, request, idInt)
+		patient, err := c.service.Update(ctx, request, id)
+		if errors.Is(err, patients.ErrNotFound) {
+			web.NewErrorResponse(ctx, http.StatusNotFound, "patient not found")
+			return
+		}
 		if err != nil {
 			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
 			return
@@ -144,12 +145,6 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 func (c *Controller) HandlerPatch() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		id, err := strconv.Atoi(ctx.Param("id"))
-		if err != nil {
-			web.NewErrorResponse(ctx, http.StatusBadRequest, "invalid id")
-			return
-		}
-
 		var request domain.PatientDniDTO
 
 		errBind := ctx.Bind(&request)
@@ -158,7 +153,17 @@ func (c *Controller) HandlerPatch() gin.HandlerFunc {
 			return
 		}
 
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			web.NewErrorResponse(ctx, http.StatusBadRequest, "invalid id")
+			return
+		}
+
 		patient, err := c.service.Patch(ctx, request, id)
+		if errors.Is(err, patients.ErrNotFound) {
+			web.NewErrorResponse(ctx, http.StatusNotFound, "patient not found")
+			return
+		}
 		if err != nil {
 			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
 			return
@@ -188,6 +193,10 @@ func (c *Controller) HandlerDelete() gin.HandlerFunc {
 		}
 
 		err = c.service.Delete(ctx, id)
+		if errors.Is(err, patients.ErrNotFound) {
+			web.NewErrorResponse(ctx, http.StatusNotFound, "patient not found")
+			return
+		}
 		if err != nil {
 			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
 			return
