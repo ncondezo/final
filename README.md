@@ -4,7 +4,7 @@ Esta API es la encargada de manera administrar turnos medicos a pacientes.
 
 ## Environment Variables
 
-Para correr este proyecto deberás agregar las siguientes variables de entorno como parametros en la ejecución de tu contenedor.
+Para correr este proyecto deberás agregar las siguientes variables de entorno de la Api en un archivo .env en la raiz del proyecto.
 
 `MYSQL_ROOT_PASSWORD`: Password root para base de datos MYSQL.
 
@@ -13,6 +13,8 @@ Para correr este proyecto deberás agregar las siguientes variables de entorno c
 `MYSQL_USER`: Username para acceder a la base de datos.
 
 `MYSQL_PASSWORD`: Password de base de datos.
+
+`TOKEN_SECRET_KEY`: Secret Key para funcionamiento del token (cualquier valor en formato String por ej: "MysecretKey")
 
 
 ## Seteo de ambiente
@@ -43,6 +45,15 @@ Abrir en visual studio el proyecto
 ```bash
   docker compose up 
 ```
+
+**Ejecución de la api en Go desde terminal**
+
+    Posicionarse en la raiz de la aplicacion y ejecutar el siguiente comando para correr la Api.
+
+```bash
+  go run ./cmd/server/main.go
+```
+
 
 
 
