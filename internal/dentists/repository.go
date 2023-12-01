@@ -14,7 +14,7 @@ var (
 	ErrExecStatement    = errors.New("error exec statement")
 	ErrLastInsertedId   = errors.New("error last inserted id")
 	ErrNotFound         = errors.New("error not found dentist")
-	ErrAlreadyExists		= errors.New("error dentist already exists")
+	ErrAlreadyExists    = errors.New("error dentist already exists")
 )
 
 type repository struct {
@@ -88,10 +88,9 @@ func (r *repository) Update(ctx context.Context, dentist domain.Dentist, id int)
 	if err != nil {
 		return domain.Dentist{}, ErrPrepareStatement
 	}
-
 	defer statement.Close()
 
-	result, err := statement.Exec(
+	_, err = statement.Exec(
 		dentist.Name,
 		dentist.LastName,
 		dentist.Registration,
@@ -102,45 +101,24 @@ func (r *repository) Update(ctx context.Context, dentist domain.Dentist, id int)
 		return domain.Dentist{}, ErrExecStatement
 	}
 
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		return domain.Dentist{}, err
-	}
-
-	if rowsAffected < 1 {
-		return domain.Dentist{}, ErrNotFound
-	}
-
-	dentist.Id = id
-
 	return dentist, nil
 }
 
 // Patch is a method that updates a dentist registry by ID.
-func (r *repository) Patch(ctx context.Context, registry string, id int) (domain.Dentist, error) {
+func (r *repository) Patch(ctx context.Context, dentist domain.Dentist, id int) (domain.Dentist, error) {
 	statement, err := r.db.Prepare(QueryPatchDentist)
 	if err != nil {
 		return domain.Dentist{}, ErrPrepareStatement
 	}
-
 	defer statement.Close()
 
-	result, err := statement.Exec(registry, id)
+	_, err = statement.Exec(dentist.Registration, id)
 
 	if err != nil {
 		return domain.Dentist{}, ErrExecStatement
 	}
 
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		return domain.Dentist{}, err
-	}
-
-	if rowsAffected < 1 {
-		return domain.Dentist{}, ErrNotFound
-	}
-
-	return domain.Dentist{}, nil
+	return dentist, nil
 }
 
 // Delete is a method that deletes a patient by ID.

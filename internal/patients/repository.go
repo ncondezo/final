@@ -92,10 +92,9 @@ func (r *repository) Update(ctx context.Context, patient domain.Patient, id int)
 	if err != nil {
 		return domain.Patient{}, ErrPrepareStatement
 	}
-
 	defer statement.Close()
 
-	result, err := statement.Exec(
+	_, err = statement.Exec(
 		patient.Name,
 		patient.Lastname,
 		patient.Address,
@@ -107,45 +106,24 @@ func (r *repository) Update(ctx context.Context, patient domain.Patient, id int)
 		return domain.Patient{}, ErrExecStatement
 	}
 
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		return domain.Patient{}, err
-	}
-
-	if rowsAffected < 1 {
-		return domain.Patient{}, ErrNotFound
-	}
-
-	patient.Id = id
-
 	return patient, nil
 }
 
 // Patch is a method that updates a patient dni by ID.
-func (r *repository) Patch(ctx context.Context, dni string, id int) (domain.Patient, error) {
+func (r *repository) Patch(ctx context.Context, patient domain.Patient, id int) (domain.Patient, error) {
 	statement, err := r.db.Prepare(QueryPatchPatient)
 	if err != nil {
 		return domain.Patient{}, ErrPrepareStatement
 	}
-
 	defer statement.Close()
 
-	result, err := statement.Exec(dni, id)
+	_, err = statement.Exec(patient.Dni, id)
 
 	if err != nil {
 		return domain.Patient{}, ErrExecStatement
 	}
 
-	rowsAffected, err := result.RowsAffected()
-	if err != nil {
-		return domain.Patient{}, err
-	}
-
-	if rowsAffected < 1 {
-		return domain.Patient{}, ErrNotFound
-	}
-
-	return domain.Patient{}, nil
+	return patient, nil
 }
 
 // Delete is a method that deletes a patient by ID.

@@ -53,13 +53,15 @@ func (s *service) GetByID(ctx context.Context, id int) (domain.Patient, error) {
 
 // Update is a method that update a patient by ID.
 func (s *service) Update(ctx context.Context, dto domain.PatientDTO, id int) (domain.Patient, error) {
-	patient := domain.Patient{
-		Name:     dto.Name,
-		Lastname: dto.Lastname,
-		Address:  dto.Address,
-		Dni:      dto.Dni,
+	patient, err := s.GetByID(ctx, id)
+	if err != nil {
+		return domain.Patient{}, err
 	}
-	patient, err := s.repository.Update(ctx, patient, id)
+	patient.Name = dto.Name
+	patient.Lastname = dto.Lastname
+	patient.Address = dto.Address
+	patient.Dni = dto.Dni
+	patient, err = s.repository.Update(ctx, patient, id)
 	if err != nil {
 		log.Println("[PatientsService][Update] error updating patient", err)
 		return domain.Patient{}, err
@@ -69,7 +71,12 @@ func (s *service) Update(ctx context.Context, dto domain.PatientDTO, id int) (do
 
 // Patch is a method that update a patient dni by ID.
 func (s *service) Patch(ctx context.Context, dto domain.PatientDniDTO, id int) (domain.Patient, error) {
-	patient, err := s.repository.Patch(ctx, dto.Dni, id)
+	patient, err := s.GetByID(ctx, id)
+	if err != nil {
+		return domain.Patient{}, err
+	}
+	patient.Dni = dto.Dni
+	patient, err = s.repository.Patch(ctx, patient, id)
 	if err != nil {
 		log.Println("[PatientsService][Patch] error patching patient", err)
 		return domain.Patient{}, err
