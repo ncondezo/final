@@ -97,7 +97,7 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 
 		errBind := ctx.Bind(&request)
 		if errBind != nil {
-			web.Error(ctx, http.StatusBadRequest, "%s", "bad request binding")
+			web.NewErrorResponse(ctx, http.StatusBadRequest, "bad request binding")
 			return
 		}
 
