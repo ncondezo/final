@@ -16,9 +16,9 @@ CREATE TABLE IF NOT EXISTS users
 
 CREATE TABLE IF NOT EXISTS dentists
 (
-    id       VARCHAR(100) NOT NULL,
+    id       INT NOT NULL,
     name     VARCHAR(25)  NOT NULL,
-    surname  VARCHAR(25)  NOT NULL,
+    lastname VARCHAR(25)  NOT NULL,
     registry VARCHAR(10)  NOT NULL,
     CONSTRAINT dentists_id
         PRIMARY KEY (id),
@@ -28,12 +28,12 @@ CREATE TABLE IF NOT EXISTS dentists
 
 CREATE TABLE IF NOT EXISTS patients
 (
-    id            INT NOT NULL,
-    name          VARCHAR(25)  NOT NULL,
-    lastname      VARCHAR(25)  NOT NULL,
-    address       VARCHAR(250) NOT NULL,
-    dni           VARCHAR(10)  NOT NULL,
-    dateup        DATE         NOT NULL,
+    id       INT NOT NULL,
+    name     VARCHAR(25)  NOT NULL,
+    lastname VARCHAR(25)  NOT NULL,
+    address  VARCHAR(250) NOT NULL,
+    dni      VARCHAR(10)  NOT NULL,
+    dateup   DATE         NOT NULL,
     CONSTRAINT patients_id
         PRIMARY KEY (id),
     CONSTRAINT patients_dni

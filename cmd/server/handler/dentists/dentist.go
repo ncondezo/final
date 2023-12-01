@@ -32,19 +32,17 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 
 		dentist, err := c.service.Create(ctx, request)
 		if err != nil {
-			web.NewErrorResponse(ctx, http.StatusInternalServerError, "Internal server error")
+			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
 			return
 		}
 
-		web.NewSuccessResponse(ctx, http.StatusOK, gin.H{
-			"status": http.StatusOK,
-			"data":   dentist,
-		})
+		web.NewSuccessResponse(ctx, http.StatusCreated, dentist)
 	}
 }
 
 func (c *Controller) HandlerGetById() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
 			web.NewErrorResponse(ctx, http.StatusBadRequest, "invalid id")
@@ -54,12 +52,10 @@ func (c *Controller) HandlerGetById() gin.HandlerFunc {
 		dentist, err := c.service.GetByID(ctx, id)
 		if err != nil {
 			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
+			return
 		}
 
-		web.NewSuccessResponse(ctx, http.StatusOK, gin.H{
-			"status": http.StatusOK,
-			"data":   dentist,
-		})
+		web.NewSuccessResponse(ctx, http.StatusOK, dentist)
 	}
 }
 
@@ -69,7 +65,6 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 		var request domain.Dentist
 
 		errBind := ctx.Bind(&request)
-
 		if errBind != nil {
 			web.NewErrorResponse(ctx, http.StatusBadRequest, "bad request binding")
 			return
@@ -90,16 +85,13 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 			return
 		}
 
-		web.NewSuccessResponse(ctx, http.StatusOK, gin.H{
-			"data": dentist,
-		})
-
+		web.NewSuccessResponse(ctx, http.StatusOK, dentist)
 	}
-
 }
 
 func (c *Controller) HandlerDelete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
 			web.NewErrorResponse(ctx, http.StatusBadRequest, "invalid id")
@@ -111,15 +103,16 @@ func (c *Controller) HandlerDelete() gin.HandlerFunc {
 			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
 			return
 		}
+		
 		web.NewSuccessResponse(ctx, http.StatusOK, gin.H{
 			"message": "dentist deleted",
 		})
 	}
-
 }
 
 func (c *Controller) HandlerPatch() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
 			web.NewErrorResponse(ctx, http.StatusBadRequest, "invalid id")
@@ -140,8 +133,6 @@ func (c *Controller) HandlerPatch() gin.HandlerFunc {
 			return
 		}
 
-		web.NewSuccessResponse(ctx, http.StatusOK, gin.H{
-			"data": dentist,
-		})
+		web.NewSuccessResponse(ctx, http.StatusOK, dentist)
 	}
 }

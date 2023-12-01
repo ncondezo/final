@@ -5,14 +5,12 @@ import (
 	"net/http"
 
 	authController "github.com/ncondezo/final/cmd/server/handler/auth"
-
-	dentistControlle "github.com/ncondezo/final/cmd/server/handler/dentists"
+	dentistController "github.com/ncondezo/final/cmd/server/handler/dentists"
 	dentist "github.com/ncondezo/final/internal/dentists"
 	patientController "github.com/ncondezo/final/cmd/server/handler/patient"
 	patient "github.com/ncondezo/final/internal/patients"
 	user "github.com/ncondezo/final/internal/user"
 	"github.com/ncondezo/final/pkg/middleware"
-	_ "github.com/ncondezo/final/pkg/middleware"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -72,14 +70,14 @@ func (router *router) buildAuthGroup() {
 
 func (router *router) buildDentists() {
 
-	repository := dentist.NewMySqlRepository(router.db)
+	repository := dentist.NewRepository(router.db)
 	service := dentist.NewDentistService(repository)
-	controller := dentistControlle.NewDentistController(service)
+	controller := dentistController.NewDentistController(service)
 
-	dentistGroup := router.apiGroup.Group("/dentist")
+	dentistGroup := router.apiGroup.Group("/dentists")
 	{
 		dentistGroup.POST("", middleware.Authorization(), controller.HandlerCreate())
-		dentistGroup.GET("/:id", middleware.Authorization(), controller.HandlerGetById())
+		dentistGroup.GET("/:id", controller.HandlerGetById())
 		dentistGroup.PUT("/:id", middleware.Authorization(), controller.HandlerUpdate())
 		dentistGroup.PATCH("/:id", middleware.Authorization(), controller.HandlerPatch())
 		dentistGroup.DELETE("/:id", middleware.Authorization(), controller.HandlerDelete())
@@ -88,14 +86,14 @@ func (router *router) buildDentists() {
 
 func (router *router) buildPatients() {
 
-	repository := patient.NewMyRepository(router.db)
-	service := patient.NewServicePatient(repository)
-	controller := patientController.NewControladorPaciente(service)
+	repository := patient.NewRepository(router.db)
+	service := patient.NewPatientService(repository)
+	controller := patientController.NewPatientController(service)
 
 	patientGroup := router.apiGroup.Group("/patients")
 	{
 		patientGroup.POST("", middleware.Authorization(), controller.HandlerCreate())
-		patientGroup.GET("/:id", middleware.Authorization(), controller.HandlerGetByID())
+		patientGroup.GET("/:id", controller.HandlerGetByID())
 		patientGroup.PUT("/:id", middleware.Authorization(), controller.HandlerUpdate())
 		patientGroup.PATCH("/:id", middleware.Authorization(), controller.HandlerPatch())
 		patientGroup.DELETE("/:id", middleware.Authorization(), controller.HandlerDelete())

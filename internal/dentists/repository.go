@@ -12,24 +12,23 @@ var (
 	ErrPrepareStatement = errors.New("error prepare statement")
 	ErrExecStatement    = errors.New("error exec statement")
 	ErrLastInsertedId   = errors.New("error last inserted id")
+	ErrNotFound         = errors.New("error not found dentist")
 )
 
-type repositorymysql struct {
+type repository struct {
 	db *sql.DB
 }
 
-// NewMemoryRepository ....
-func NewMySqlRepository(db *sql.DB) Repository {
-	return &repositorymysql{db: db}
+func NewRepository(db *sql.DB) Repository {
+	return &repository{db: db}
 }
 
-// Create a new dentist
-func (r *repositorymysql) Create(ctx context.Context, dentist domain.Dentist) (domain.Dentist, error) {
+// Create is a method that creates a new dentist.
+func (r *repository) Create(ctx context.Context, dentist domain.Dentist) (domain.Dentist, error) {
 	statement, err := r.db.Prepare(QueryInsertDentist)
 	if err != nil {
-		return dentist, ErrPrepareStatement
+		return domain.Dentist{}, ErrPrepareStatement
 	}
-
 	defer statement.Close()
 
 	result, err := statement.Exec(
@@ -53,8 +52,8 @@ func (r *repositorymysql) Create(ctx context.Context, dentist domain.Dentist) (d
 	return dentist, nil
 }
 
-// Get a dentist by id
-func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Dentist, error) {
+// GetByID is a method that returns a dentist by ID.
+func (r *repository) GetByID(ctx context.Context, id int) (domain.Dentist, error) {
 	row := r.db.QueryRow(QueryGetDentistById, id)
 
 	var dentist domain.Dentist
@@ -72,11 +71,8 @@ func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Dentist, 
 	return dentist, nil
 }
 
-// Update dentist info
-func (r *repositorymysql) Update(
-	ctx context.Context,
-	dentist domain.Dentist,
-	id int) (domain.Dentist, error) {
+// Update is a method that updates a dentist by ID.
+func (r *repository) Update(ctx context.Context, dentist domain.Dentist, id int) (domain.Dentist, error) {
 	statement, err := r.db.Prepare(QueryUpdateDentist)
 	if err != nil {
 		return domain.Dentist{}, err
@@ -88,6 +84,7 @@ func (r *repositorymysql) Update(
 		dentist.Name,
 		dentist.LastName,
 		dentist.Registration,
+		id,
 	)
 
 	if err != nil {
@@ -102,13 +99,10 @@ func (r *repositorymysql) Update(
 	dentist.Id = id
 
 	return dentist, nil
-
 }
 
-func (r *repositorymysql) Patch(
-	ctx context.Context,
-	dentist domain.Dentist,
-	id int) (domain.Dentist, error) {
+// Patch is a method that updates a dentist by ID.
+func (r *repository) Patch(ctx context.Context, dentist domain.Dentist, id int) (domain.Dentist, error) {
 	statement, err := r.db.Prepare(QueryUpdateDentist)
 	if err != nil {
 		return domain.Dentist{}, err
@@ -120,6 +114,7 @@ func (r *repositorymysql) Patch(
 		dentist.Name,
 		dentist.LastName,
 		dentist.Registration,
+		id,
 	)
 
 	if err != nil {
@@ -134,7 +129,8 @@ func (r *repositorymysql) Patch(
 	return dentist, nil
 }
 
-func (r *repositorymysql) Delete(ctx context.Context, id int) error {
+// Delete is a method that deletes a patient by ID.
+func (r *repository) Delete(ctx context.Context, id int) error {
 	result, err := r.db.Exec(QueryDeleteDentist, id)
 	if err != nil {
 		return err
@@ -146,7 +142,7 @@ func (r *repositorymysql) Delete(ctx context.Context, id int) error {
 	}
 
 	if rowsAffected < 1 {
-		return errors.New("e")
+		return ErrNotFound
 	}
 
 	return nil
