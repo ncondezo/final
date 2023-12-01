@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 
+	"github.com/go-sql-driver/mysql"
 	"github.com/ncondezo/final/internal/domain"
 )
 
@@ -13,6 +14,7 @@ var (
 	ErrExecStatement    = errors.New("error exec statement")
 	ErrLastInsertedId   = errors.New("error last inserted id")
 	ErrNotFound         = errors.New("error not found patient")
+	ErrAlreadyExists    = errors.New("error patient already exists")
 )
 
 type repository struct {
@@ -25,6 +27,8 @@ func NewRepository(db *sql.DB) Repository {
 
 // Create is a method that creates a new patient.
 func (r *repository) Create(ctx context.Context, patient domain.Patient) (domain.Patient, error) {
+	var mysqlError *mysql.MySQLError
+
 	statement, err := r.db.Prepare(QueryInsertPatient)
 	if err != nil {
 		return domain.Patient{}, ErrPrepareStatement
@@ -39,8 +43,14 @@ func (r *repository) Create(ctx context.Context, patient domain.Patient) (domain
 		patient.DateUp,
 	)
 
-	if err != nil {
-		return domain.Patient{}, ErrExecStatement
+	ok := errors.As(err, &mysqlError)
+	if ok {
+		switch mysqlError.Number {
+		case 1062:
+			return domain.Patient{}, ErrAlreadyExists
+		default:
+			return domain.Patient{}, ErrExecStatement
+		}
 	}
 
 	lastId, err := result.LastInsertId()

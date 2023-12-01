@@ -1,6 +1,7 @@
 package dentists
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -43,6 +44,10 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 		}
 
 		dentist, err := c.service.Create(ctx, request)
+		if errors.Is(err, dentists.ErrAlreadyExists) {
+			web.NewErrorResponse(ctx, http.StatusConflict, "dentist already exists")
+			return
+		}
 		if err != nil {
 			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
 			return
