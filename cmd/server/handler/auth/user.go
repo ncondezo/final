@@ -2,9 +2,7 @@ package user
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
-	"reflect"
 
 	"github.com/ncondezo/final/internal/domain"
 	user "github.com/ncondezo/final/internal/user"
@@ -43,7 +41,7 @@ func (controller *controller) Signup() gin.HandlerFunc {
 				"El JSON enviado en el cuerpo no es válido")
 			return
 		}
-		if err := reqJsonValidation(userData); err != "" {
+		if err := web.RequestJsonValidation(userData); err != "" {
 			web.NewErrorResponse(context, http.StatusBadRequest, err)
 			return
 		}
@@ -82,7 +80,7 @@ func (controller *controller) Login() gin.HandlerFunc {
 				"El JSON enviado en el cuerpo no es válido")
 			return
 		}
-		if err := reqJsonValidation(userData); err != "" {
+		if err := web.RequestJsonValidation(userData); err != "" {
 			web.NewErrorResponse(context, http.StatusBadRequest, err)
 			return
 		}
@@ -104,33 +102,4 @@ func (controller *controller) Login() gin.HandlerFunc {
 		}
 		web.NewLoginResponse(context, http.StatusOK, *logged)
 	}
-}
-
-func reqJsonValidation(request interface{}) string {
-	requestCamps := reflect.ValueOf(request)
-	for i := 0; i < requestCamps.NumField(); i++ {
-		campName := requestCamps.Type().Field(i).Name
-		campValue := requestCamps.Field(i).Interface()
-		campType := fmt.Sprint(reflect.TypeOf(campValue).Kind())
-		switch campType {
-		case "string":
-			if campValue == "" {
-				return fmt.Sprintf("El campo %v no puede estar vacío", campName)
-			}
-		case "int":
-			if campValue.(int) <= 0 {
-				return fmt.Sprintf("El campo %v no puede estar vacío", campName)
-			}
-		case "float64":
-			if campValue.(float64) == 0 {
-				return fmt.Sprintf("El campo %v no puede estar vacío", campName)
-			}
-		case "boolean":
-			if !campValue.(bool) {
-				return fmt.Sprintf("El campo %v no puede estar vacío", campName)
-			}
-
-		}
-	}
-	return ""
 }

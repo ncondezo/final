@@ -42,6 +42,10 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 			web.NewErrorResponse(ctx, http.StatusBadRequest, "bad request")
 			return
 		}
+		if err := web.RequestJsonValidation(request); err != "" {
+			web.NewErrorResponse(ctx, http.StatusBadRequest, err)
+			return
+		}
 
 		patient, err := c.service.Create(ctx, request)
 		if errors.Is(err, patients.ErrAlreadyExists) {
@@ -110,6 +114,10 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 			web.NewErrorResponse(ctx, http.StatusBadRequest, "bad request binding")
 			return
 		}
+		if err := web.RequestJsonValidation(request); err != "" {
+			web.NewErrorResponse(ctx, http.StatusBadRequest, err)
+			return
+		}
 
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
@@ -150,6 +158,10 @@ func (c *Controller) HandlerPatch() gin.HandlerFunc {
 		errBind := ctx.Bind(&request)
 		if errBind != nil {
 			web.NewErrorResponse(ctx, http.StatusBadRequest, "bad request binding")
+			return
+		}
+		if err := web.RequestJsonValidation(request); err != "" {
+			web.NewErrorResponse(ctx, http.StatusBadRequest, err)
 			return
 		}
 
