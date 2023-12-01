@@ -105,22 +105,16 @@ func (r *repository) Update(ctx context.Context, patient domain.Patient, id int)
 	return patient, nil
 }
 
-// Patch is a method that updates a patient by ID.
-func (r *repository) Patch(ctx context.Context, patient domain.Patient, id int) (domain.Patient, error) {
-	statement, err := r.db.Prepare(QueryUpdatePatient)
+// Patch is a method that updates a patient dni by ID.
+func (r *repository) Patch(ctx context.Context, dni string, id int) (domain.Patient, error) {
+	statement, err := r.db.Prepare(QueryPatchPatient)
 	if err != nil {
 		return domain.Patient{}, err
 	}
 
 	defer statement.Close()
 
-	result, err := statement.Exec(
-		patient.Name,
-		patient.Lastname,
-		patient.Address,
-		patient.Dni,
-		id,
-	)
+	result, err := statement.Exec(dni, id)
 
 	if err != nil {
 		return domain.Patient{}, err
@@ -131,9 +125,7 @@ func (r *repository) Patch(ctx context.Context, patient domain.Patient, id int) 
 		return domain.Patient{}, err
 	}
 
-	patient.Id = id
-
-	return patient, nil
+	return domain.Patient{}, nil
 }
 
 // Delete is a method that deletes a patient by ID.

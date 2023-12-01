@@ -17,3 +17,7 @@ type PatientDTO struct {
 	Address  string `json:"address"`
 	Dni      string `json:"dni"`
 }
+
+type PatientDniDTO struct {
+	Dni string `json:"dni"`
+}

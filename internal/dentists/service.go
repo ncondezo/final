@@ -11,7 +11,7 @@ type Service interface {
 	Create(ctx context.Context, dto domain.DentistDTO) (domain.Dentist, error)
 	GetByID(ctx context.Context, id int) (domain.Dentist, error)
 	Update(ctx context.Context, dto domain.DentistDTO, id int) (domain.Dentist, error)
-	Patch(ctx context.Context, dto domain.DentistDTO, id int) (domain.Dentist, error)
+	Patch(ctx context.Context, dto domain.DentistRegistryDTO, id int) (domain.Dentist, error)
 	Delete(ctx context.Context, id int) error
 }
 
@@ -63,14 +63,9 @@ func (s *service) Update(ctx context.Context, dto domain.DentistDTO, id int) (do
 	return dentist, nil
 }
 
-// Patch is a method that update a dentist by ID.
-func (s *service) Patch(ctx context.Context, dto domain.DentistDTO, id int) (domain.Dentist, error) {
-	dentist := domain.Dentist{
-		Name:         dto.Name,
-		LastName:     dto.LastName,
-		Registration: dto.Registration,
-	}
-	dentist, err := s.repository.Patch(ctx, dentist, id)
+// Patch is a method that update a dentist registry by ID.
+func (s *service) Patch(ctx context.Context, dto domain.DentistRegistryDTO, id int) (domain.Dentist, error) {
+	dentist, err := s.repository.Patch(ctx, dto.Registration, id)
 	if err != nil {
 		log.Println("[DentistService][Patch] error patching dentist", err)
 		return domain.Dentist{}, err

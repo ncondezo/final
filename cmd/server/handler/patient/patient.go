@@ -122,12 +122,12 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 }
 
 // HandlerPatch godoc
-// @Summary Update a patient by id
+// @Summary Update a patient dni by id
 // @Tags patients
 // @Accept json
 // @Produce json
 // @Param ID path int true "Patient ID to update"
-// @Param Patient body domain.PatientDTO true "Patient information"
+// @Param Patient body domain.PatientDniDTO true "Patient DNI"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
@@ -141,7 +141,7 @@ func (c *Controller) HandlerPatch() gin.HandlerFunc {
 			return
 		}
 
-		var request domain.PatientDTO
+		var request domain.PatientDniDTO
 
 		errBind := ctx.Bind(&request)
 		if errBind != nil {

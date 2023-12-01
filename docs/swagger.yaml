@@ -8,6 +8,11 @@ definitions:
       registry:
         type: string
     type: object
+  domain.DentistRegistryDTO:
+    properties:
+      registry:
+        type: string
+    type: object
   domain.LoginDTO:
     properties:
       email:
@@ -24,6 +29,11 @@ definitions:
       lastname:
         type: string
       name:
+        type: string
+    type: object
+  domain.PatientDniDTO:
+    properties:
+      dni:
         type: string
     type: object
   domain.SignupDTO:
@@ -213,12 +223,12 @@ paths:
         name: ID
         required: true
         type: integer
-      - description: Dentist information
+      - description: Dentist registry number
         in: body
-        name: Dentist
+        name: DentistRegistry
         required: true
         schema:
-          $ref: '#/definitions/domain.DentistDTO'
+          $ref: '#/definitions/domain.DentistRegistryDTO'
       produces:
       - application/json
       responses:
@@ -234,7 +244,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/web.ErrorResponse'
-      summary: Update a dentist by id
+      summary: Update a dentist registry number by id
       tags:
       - dentists
     put:
@@ -361,12 +371,12 @@ paths:
         name: ID
         required: true
         type: integer
-      - description: Patient information
+      - description: Patient DNI
         in: body
         name: Patient
         required: true
         schema:
-          $ref: '#/definitions/domain.PatientDTO'
+          $ref: '#/definitions/domain.PatientDniDTO'
       produces:
       - application/json
       responses:
@@ -382,7 +392,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/web.ErrorResponse'
-      summary: Update a patient by id
+      summary: Update a patient dni by id
       tags:
       - patients
     put:

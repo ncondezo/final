@@ -12,3 +12,7 @@ type DentistDTO struct {
 	LastName     string `json:"lastname"`
 	Registration string `json:"registry"`
 }
+
+type DentistRegistryDTO struct {
+	Registration string `json:"registry"`
+}

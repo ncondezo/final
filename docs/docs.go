@@ -292,7 +292,7 @@ const docTemplate = `{
                 "tags": [
                     "dentists"
                 ],
-                "summary": "Update a dentist by id",
+                "summary": "Update a dentist registry number by id",
                 "parameters": [
                     {
                         "type": "integer",
@@ -302,12 +302,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Dentist information",
-                        "name": "Dentist",
+                        "description": "Dentist registry number",
+                        "name": "DentistRegistry",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.DentistDTO"
+                            "$ref": "#/definitions/domain.DentistRegistryDTO"
                         }
                     }
                 ],
@@ -518,7 +518,7 @@ const docTemplate = `{
                 "tags": [
                     "patients"
                 ],
-                "summary": "Update a patient by id",
+                "summary": "Update a patient dni by id",
                 "parameters": [
                     {
                         "type": "integer",
@@ -528,12 +528,12 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "Patient information",
+                        "description": "Patient DNI",
                         "name": "Patient",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.PatientDTO"
+                            "$ref": "#/definitions/domain.PatientDniDTO"
                         }
                     }
                 ],
@@ -575,6 +575,14 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.DentistRegistryDTO": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.LoginDTO": {
             "type": "object",
             "properties": {
@@ -599,6 +607,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.PatientDniDTO": {
+            "type": "object",
+            "properties": {
+                "dni": {
                     "type": "string"
                 }
             }

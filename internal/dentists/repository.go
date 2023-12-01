@@ -100,21 +100,16 @@ func (r *repository) Update(ctx context.Context, dentist domain.Dentist, id int)
 	return dentist, nil
 }
 
-// Patch is a method that updates a dentist by ID.
-func (r *repository) Patch(ctx context.Context, dentist domain.Dentist, id int) (domain.Dentist, error) {
-	statement, err := r.db.Prepare(QueryUpdateDentist)
+// Patch is a method that updates a dentist registry by ID.
+func (r *repository) Patch(ctx context.Context, registry string, id int) (domain.Dentist, error) {
+	statement, err := r.db.Prepare(QueryPatchDentist)
 	if err != nil {
 		return domain.Dentist{}, err
 	}
 
 	defer statement.Close()
 
-	result, err := statement.Exec(
-		dentist.Name,
-		dentist.LastName,
-		dentist.Registration,
-		id,
-	)
+	result, err := statement.Exec(registry, id)
 
 	if err != nil {
 		return domain.Dentist{}, err
@@ -125,9 +120,7 @@ func (r *repository) Patch(ctx context.Context, dentist domain.Dentist, id int) 
 		return domain.Dentist{}, err
 	}
 
-	dentist.Id = id
-
-	return dentist, nil
+	return domain.Dentist{}, nil
 }
 
 // Delete is a method that deletes a patient by ID.
