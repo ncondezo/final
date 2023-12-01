@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users
 
 CREATE TABLE IF NOT EXISTS dentists
 (
-    id       INT NOT NULL,
+    id       INT NOT NULL AUTO_INCREMENT,
     name     VARCHAR(25)  NOT NULL,
     lastname VARCHAR(25)  NOT NULL,
     registry VARCHAR(10)  NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS dentists
 
 CREATE TABLE IF NOT EXISTS patients
 (
-    id       INT NOT NULL,
+    id       INT NOT NULL AUTO_INCREMENT,
     name     VARCHAR(25)  NOT NULL,
     lastname VARCHAR(25)  NOT NULL,
     address  VARCHAR(250) NOT NULL,

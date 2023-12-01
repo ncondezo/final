@@ -10,3 +10,10 @@ type Patient struct {
 	Dni      string    `json:"dni"`
 	DateUp   time.Time `json:"dateup"`
 }
+
+type PatientDTO struct {
+	Name     string `json:"name"`
+	Lastname string `json:"lastname"`
+	Address  string `json:"address"`
+	Dni      string `json:"dni"`
+}

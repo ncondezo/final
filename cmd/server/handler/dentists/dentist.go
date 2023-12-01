@@ -21,7 +21,7 @@ func NewDentistController(service dentists.Service) *Controller {
 func (c *Controller) HandlerCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		var request domain.Dentist
+		var request domain.DentistDTO
 
 		err := ctx.Bind(&request)
 
@@ -62,7 +62,7 @@ func (c *Controller) HandlerGetById() gin.HandlerFunc {
 func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		var request domain.Dentist
+		var request domain.DentistDTO
 
 		errBind := ctx.Bind(&request)
 		if errBind != nil {
@@ -89,27 +89,6 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 	}
 }
 
-func (c *Controller) HandlerDelete() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-
-		id, err := strconv.Atoi(ctx.Param("id"))
-		if err != nil {
-			web.NewErrorResponse(ctx, http.StatusBadRequest, "invalid id")
-			return
-		}
-
-		err = c.service.Delete(ctx, id)
-		if err != nil {
-			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
-			return
-		}
-		
-		web.NewSuccessResponse(ctx, http.StatusOK, gin.H{
-			"message": "dentist deleted",
-		})
-	}
-}
-
 func (c *Controller) HandlerPatch() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -119,7 +98,7 @@ func (c *Controller) HandlerPatch() gin.HandlerFunc {
 			return
 		}
 
-		var request domain.Dentist
+		var request domain.DentistDTO
 
 		errBind := ctx.Bind(&request)
 		if errBind != nil {
@@ -134,5 +113,26 @@ func (c *Controller) HandlerPatch() gin.HandlerFunc {
 		}
 
 		web.NewSuccessResponse(ctx, http.StatusOK, dentist)
+	}
+}
+
+func (c *Controller) HandlerDelete() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			web.NewErrorResponse(ctx, http.StatusBadRequest, "invalid id")
+			return
+		}
+
+		err = c.service.Delete(ctx, id)
+		if err != nil {
+			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
+			return
+		}
+
+		web.NewSuccessResponse(ctx, http.StatusOK, gin.H{
+			"message": "dentist deleted",
+		})
 	}
 }

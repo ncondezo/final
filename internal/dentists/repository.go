@@ -32,7 +32,6 @@ func (r *repository) Create(ctx context.Context, dentist domain.Dentist) (domain
 	defer statement.Close()
 
 	result, err := statement.Exec(
-		dentist.Id,
 		dentist.Name,
 		dentist.LastName,
 		dentist.Registration,
@@ -125,6 +124,8 @@ func (r *repository) Patch(ctx context.Context, dentist domain.Dentist, id int) 
 	if err != nil {
 		return domain.Dentist{}, err
 	}
+
+	dentist.Id = id
 
 	return dentist, nil
 }

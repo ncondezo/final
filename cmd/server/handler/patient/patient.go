@@ -31,7 +31,7 @@ func NewPatientController(service patients.Service) *Controller {
 func (c *Controller) HandlerCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		var request domain.Patient
+		var request domain.PatientDTO
 
 		err := ctx.Bind(&request)
 
@@ -93,7 +93,7 @@ func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		var request domain.Patient
+		var request domain.PatientDTO
 
 		errBind := ctx.Bind(&request)
 		if errBind != nil {
@@ -111,6 +111,44 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 		}
 
 		patient, err := c.service.Update(ctx, request, idInt)
+		if err != nil {
+			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
+			return
+		}
+
+		web.NewSuccessResponse(ctx, http.StatusOK, patient)
+	}
+}
+
+// HandlerPatch godoc
+// @Summary Update a patient by id
+// @Tags patients
+// @Accept json
+// @Produce json
+// @Param ID path int true "Patient ID to search"
+// @Param Patient body domain.Patient true "Patient information"
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /patients/:id [patch]
+func (c *Controller) HandlerPatch() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		id, err := strconv.Atoi(ctx.Param("id"))
+		if err != nil {
+			web.NewErrorResponse(ctx, http.StatusBadRequest, "invalid id")
+			return
+		}
+
+		var request domain.PatientDTO
+
+		errBind := ctx.Bind(&request)
+		if errBind != nil {
+			web.NewErrorResponse(ctx, http.StatusBadRequest, "bad request binding")
+			return
+		}
+
+		patient, err := c.service.Patch(ctx, request, id)
 		if err != nil {
 			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
 			return
@@ -148,43 +186,5 @@ func (c *Controller) HandlerDelete() gin.HandlerFunc {
 		web.NewSuccessResponse(ctx, http.StatusOK, gin.H{
 			"message": "patient deleted",
 		})
-	}
-}
-
-// HandlerPatch godoc
-// @Summary Update a patient by id
-// @Tags patients
-// @Accept json
-// @Produce json
-// @Param ID path int true "Patient ID to search"
-// @Param Patient body domain.Patient true "Patient information"
-// @Success 200 {object} web.response
-// @Failure 400 {object} web.errorResponse
-// @Failure 500 {object} web.errorResponse
-// @Router /patients/:id [patch]
-func (c *Controller) HandlerPatch() gin.HandlerFunc {
-	return func(ctx *gin.Context) {
-
-		id, err := strconv.Atoi(ctx.Param("id"))
-		if err != nil {
-			web.NewErrorResponse(ctx, http.StatusBadRequest, "invalid id")
-			return
-		}
-
-		var request domain.Patient
-
-		errBind := ctx.Bind(&request)
-		if errBind != nil {
-			web.NewErrorResponse(ctx, http.StatusBadRequest, "bad request binding")
-			return
-		}
-
-		patient, err := c.service.Patch(ctx, request, id)
-		if err != nil {
-			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
-			return
-		}
-
-		web.NewSuccessResponse(ctx, http.StatusOK, patient)
 	}
 }
