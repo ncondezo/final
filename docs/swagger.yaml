@@ -1,4 +1,13 @@
 definitions:
+  domain.DentistDTO:
+    properties:
+      lastname:
+        type: string
+      name:
+        type: string
+      registry:
+        type: string
+    type: object
   domain.LoginDTO:
     properties:
       email:
@@ -6,16 +15,12 @@ definitions:
       password:
         type: string
     type: object
-  domain.Patient:
+  domain.PatientDTO:
     properties:
       address:
         type: string
-      dateup:
-        type: string
       dni:
         type: string
-      id:
-        type: integer
       lastname:
         type: string
       name:
@@ -32,6 +37,13 @@ definitions:
       surname:
         type: string
     type: object
+  web.ErrorResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
   web.LoginResponse:
     properties:
       access_token:
@@ -42,17 +54,6 @@ definitions:
       data: {}
       status:
         type: integer
-    type: object
-  web.errorResponse:
-    properties:
-      code:
-        type: string
-      message:
-        type: string
-    type: object
-  web.response:
-    properties:
-      data: {}
     type: object
 info:
   contact: {}
@@ -80,6 +81,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/web.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
       summary: Existing user login
       tags:
       - users
@@ -102,9 +111,165 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
       summary: Register a new user
       tags:
       - users
+  /dentists:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Dentist information
+        in: body
+        name: Dentist
+        required: true
+        schema:
+          $ref: '#/definitions/domain.DentistDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Create a new dentist
+      tags:
+      - dentists
+  /dentists/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Dentist ID to delete
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Delete a dentist by id
+      tags:
+      - dentists
+    get:
+      parameters:
+      - description: Dentist ID to search
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Get a dentist by id
+      tags:
+      - dentists
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Dentist ID to update
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - description: Dentist information
+        in: body
+        name: Dentist
+        required: true
+        schema:
+          $ref: '#/definitions/domain.DentistDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Update a dentist by id
+      tags:
+      - dentists
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Dentist ID to update
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - description: Dentist information
+        in: body
+        name: Dentist
+        required: true
+        schema:
+          $ref: '#/definitions/domain.DentistDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Update a dentist by id
+      tags:
+      - dentists
   /patients:
     post:
       consumes:
@@ -115,14 +280,22 @@ paths:
         name: Patient
         required: true
         schema:
-          $ref: '#/definitions/domain.Patient'
+          $ref: '#/definitions/domain.PatientDTO'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/web.response'
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
       summary: Create a new patient
       tags:
       - patients
@@ -133,7 +306,7 @@ paths:
       parameters:
       - description: Patient ID to delete
         in: path
-        name: id
+        name: ID
         required: true
         type: integer
       produces:
@@ -142,15 +315,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/web.response'
+            $ref: '#/definitions/web.SuccessResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/web.errorResponse'
+            $ref: '#/definitions/web.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/web.errorResponse'
+            $ref: '#/definitions/web.ErrorResponse'
       summary: Delete a patient by id
       tags:
       - patients
@@ -167,15 +340,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/web.response'
+            $ref: '#/definitions/web.SuccessResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/web.errorResponse'
+            $ref: '#/definitions/web.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/web.errorResponse'
+            $ref: '#/definitions/web.ErrorResponse'
       summary: Get a patient by id
       tags:
       - patients
@@ -183,7 +356,7 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: Patient ID to search
+      - description: Patient ID to update
         in: path
         name: ID
         required: true
@@ -193,31 +366,30 @@ paths:
         name: Patient
         required: true
         schema:
-          $ref: '#/definitions/domain.Patient'
+          $ref: '#/definitions/domain.PatientDTO'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/web.response'
+            $ref: '#/definitions/web.SuccessResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/web.errorResponse'
+            $ref: '#/definitions/web.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/web.errorResponse'
+            $ref: '#/definitions/web.ErrorResponse'
       summary: Update a patient by id
       tags:
       - patients
     put:
       consumes:
       - application/json
-      description: Update producto by id
       parameters:
-      - description: Patient ID to search
+      - description: Patient ID to update
         in: path
         name: ID
         required: true
@@ -227,22 +399,22 @@ paths:
         name: Patient
         required: true
         schema:
-          $ref: '#/definitions/domain.Patient'
+          $ref: '#/definitions/domain.PatientDTO'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/web.response'
+            $ref: '#/definitions/web.SuccessResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/web.errorResponse'
+            $ref: '#/definitions/web.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/web.errorResponse'
+            $ref: '#/definitions/web.ErrorResponse'
       summary: Update a patient by id
       tags:
       - patients

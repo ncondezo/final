@@ -25,8 +25,10 @@ func NewPatientController(service patients.Service) *Controller {
 // @Tags patients
 // @Accept json
 // @Produce json
-// @Param Patient body domain.Patient true "Patient information"
-// @Success 201 {object} web.response
+// @Param Patient body domain.PatientDTO true "Patient information"
+// @Success 201 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
 // @Router /patients [post]
 func (c *Controller) HandlerCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -55,9 +57,9 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 // @Tags patients
 // @Produce json
 // @Param ID path int true "Patient ID to search"
-// @Success 200 {object} web.response
-// @Failure 400 {object} web.errorResponse
-// @Failure 500 {object} web.errorResponse
+// @Success 200 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
 // @Router /patients/:id [get]
 func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -80,15 +82,14 @@ func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 
 // HandlerUpdate godoc
 // @Summary Update a patient by id
-// @Description Update producto by id
 // @Tags patients
 // @Accept json
 // @Produce json
-// @Param ID path int true "Patient ID to search"
-// @Param Patient body domain.Patient true "Patient information"
-// @Success 200 {object} web.response
-// @Failure 400 {object} web.errorResponse
-// @Failure 500 {object} web.errorResponse
+// @Param ID path int true "Patient ID to update"
+// @Param Patient body domain.PatientDTO true "Patient information"
+// @Success 200 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
 // @Router /patients/:id [put]
 func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -125,11 +126,11 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 // @Tags patients
 // @Accept json
 // @Produce json
-// @Param ID path int true "Patient ID to search"
-// @Param Patient body domain.Patient true "Patient information"
-// @Success 200 {object} web.response
-// @Failure 400 {object} web.errorResponse
-// @Failure 500 {object} web.errorResponse
+// @Param ID path int true "Patient ID to update"
+// @Param Patient body domain.PatientDTO true "Patient information"
+// @Success 200 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
 // @Router /patients/:id [patch]
 func (c *Controller) HandlerPatch() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
@@ -163,10 +164,10 @@ func (c *Controller) HandlerPatch() gin.HandlerFunc {
 // @Tags patients
 // @Accept json
 // @Produce json
-// @Param id path int true "Patient ID to delete"
-// @Success 200 {object} web.response
-// @Failure 400 {object} web.errorResponse
-// @Failure 500 {object} web.errorResponse
+// @Param ID path int true "Patient ID to delete"
+// @Success 200 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
 // @Router /patients/:id [delete]
 func (c *Controller) HandlerDelete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {

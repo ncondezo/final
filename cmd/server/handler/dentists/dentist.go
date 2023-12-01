@@ -18,6 +18,18 @@ func NewDentistController(service dentists.Service) *Controller {
 	return &Controller{service: service}
 }
 
+// @BasePath /api/v1
+
+// HandlerCreate godoc
+// @Summary Create a new dentist
+// @Tags dentists
+// @Accept json
+// @Produce json
+// @Param Dentist body domain.DentistDTO true "Dentist information"
+// @Success 201 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
+// @Router /dentists [post]
 func (c *Controller) HandlerCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -40,7 +52,16 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 	}
 }
 
-func (c *Controller) HandlerGetById() gin.HandlerFunc {
+// HandlerGetByID godoc
+// @Summary Get a dentist by id
+// @Tags dentists
+// @Produce json
+// @Param ID path int true "Dentist ID to search"
+// @Success 200 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
+// @Router /dentists/:id [get]
+func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -59,6 +80,17 @@ func (c *Controller) HandlerGetById() gin.HandlerFunc {
 	}
 }
 
+// HandlerUpdate godoc
+// @Summary Update a dentist by id
+// @Tags dentists
+// @Accept json
+// @Produce json
+// @Param ID path int true "Dentist ID to update"
+// @Param Dentist body domain.DentistDTO true "Dentist information"
+// @Success 200 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
+// @Router /dentists/:id [put]
 func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -89,6 +121,17 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 	}
 }
 
+// HandlerPatch godoc
+// @Summary Update a dentist by id
+// @Tags dentists
+// @Accept json
+// @Produce json
+// @Param ID path int true "Dentist ID to update"
+// @Param Dentist body domain.DentistDTO true "Dentist information"
+// @Success 200 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
+// @Router /dentists/:id [patch]
 func (c *Controller) HandlerPatch() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -116,6 +159,16 @@ func (c *Controller) HandlerPatch() gin.HandlerFunc {
 	}
 }
 
+// HandlerDelete godoc
+// @Summary Delete a dentist by id
+// @Tags dentists
+// @Accept json
+// @Produce json
+// @Param ID path int true "Dentist ID to delete"
+// @Success 200 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
+// @Router /dentists/:id [delete]
 func (c *Controller) HandlerDelete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 

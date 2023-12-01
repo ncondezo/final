@@ -6,8 +6,8 @@ import (
 
 	authController "github.com/ncondezo/final/cmd/server/handler/auth"
 	dentistController "github.com/ncondezo/final/cmd/server/handler/dentists"
-	dentist "github.com/ncondezo/final/internal/dentists"
 	patientController "github.com/ncondezo/final/cmd/server/handler/patient"
+	dentist "github.com/ncondezo/final/internal/dentists"
 	patient "github.com/ncondezo/final/internal/patients"
 	user "github.com/ncondezo/final/internal/user"
 	"github.com/ncondezo/final/pkg/middleware"
@@ -77,11 +77,11 @@ func (router *router) buildDentists() {
 	dentistGroup := router.apiGroup.Group("/dentists")
 	{
 		dentistGroup.POST("", middleware.Authorization(), controller.HandlerCreate())
-		dentistGroup.GET("/:id", controller.HandlerGetById())
+		dentistGroup.GET("/:id", controller.HandlerGetByID())
 		dentistGroup.PUT("/:id", middleware.Authorization(), controller.HandlerUpdate())
 		dentistGroup.PATCH("/:id", middleware.Authorization(), controller.HandlerPatch())
 		dentistGroup.DELETE("/:id", middleware.Authorization(), controller.HandlerDelete())
-  }
+	}
 }
 
 func (router *router) buildPatients() {

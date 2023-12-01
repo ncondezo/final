@@ -31,6 +31,8 @@ func NewController(service user.Service) *controller {
 // @Produce json
 // @Param user body domain.SignupDTO true "User register information"
 // @Success 201 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
 // @Router /auth/signup [post]
 func (controller *controller) Signup() gin.HandlerFunc {
 	return func(context *gin.Context) {
@@ -68,6 +70,8 @@ func (controller *controller) Signup() gin.HandlerFunc {
 // @Produce json
 // @Param user body domain.LoginDTO true "User credentials"
 // @Success 200 {object} web.LoginResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
 // @Router /auth/login [post]
 func (controller *controller) Login() gin.HandlerFunc {
 	return func(context *gin.Context) {
