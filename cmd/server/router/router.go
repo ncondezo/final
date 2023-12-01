@@ -72,7 +72,7 @@ func (router *router) buildPatients() {
 	service := patient.NewServicePatient(repository)
 	controller := patientController.NewControladorPaciente(service)
 
-	patientGroup := router.apiGroup.Group("/patient")
+	patientGroup := router.apiGroup.Group("/patients")
 	{
 		patientGroup.POST("", middleware.Authorization(), controller.HandlerCreate())
 		patientGroup.GET("/:id", middleware.Authorization(), controller.HandlerGetByID())

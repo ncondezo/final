@@ -2,7 +2,6 @@ package domain
 
 import "time"
 
-// Producto es una estructura que define ...
 type Patient struct {
 	Id       int       `json:"id"`
 	Name     string    `json:"name"`

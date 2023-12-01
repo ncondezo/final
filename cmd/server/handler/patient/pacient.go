@@ -20,6 +20,16 @@ func NewControladorPaciente(service patients.Service) *Controlador {
 	}
 }
 
+// @BasePath /api/v1
+
+// HandlerCreate godoc
+// @Summary Create a new patient
+// @Tags patients
+// @Accept json
+// @Produce json
+// @Param Patient body domain.Patient true "Patient information"
+// @Success 201 {object} web.response
+// @Router /patients [post]
 func (c *Controlador) HandlerCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -38,22 +48,20 @@ func (c *Controlador) HandlerCreate() gin.HandlerFunc {
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, patient)
+		web.Success(ctx, http.StatusCreated, patient)
 
 	}
 }
 
-// Producto godoc
-// @Summary producto example
-// @Description Get producto by id
-// @Tags producto
-// @Param id path int true "id del producto"
-// @Accept json
+// HandlerGetByID godoc
+// @Summary Get a patient by id
+// @Tags patients
 // @Produce json
+// @Param ID path int true "Patient ID to search"
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /productos/:id [get]
+// @Router /patients/:id [get]
 func (c *Controlador) HandlerGetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -72,16 +80,18 @@ func (c *Controlador) HandlerGetByID() gin.HandlerFunc {
 	}
 }
 
-// Producto godoc
-// @Summary producto example
+// HandlerUpdate godoc
+// @Summary Update a patient by id
 // @Description Update producto by id
-// @Tags producto
+// @Tags patients
 // @Accept json
 // @Produce json
+// @Param ID path int true "Patient ID to search"
+// @Param Patient body domain.Patient true "Patient information"
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /productos/:id [put]
+// @Router /patients/:id [put]
 func (c *Controlador) HandlerUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -114,17 +124,16 @@ func (c *Controlador) HandlerUpdate() gin.HandlerFunc {
 	}
 }
 
-// Producto godoc
-// @Summary producto example
-// @Description Delete producto by id
-// @Tags producto
-// @Param id path int true "id del producto"
+// HandlerDelete godoc
+// @Summary Delete a patient by id
+// @Tags patients
 // @Accept json
 // @Produce json
+// @Param id path int true "Patient ID to delete"
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /productos/:id [delete]
+// @Router /patients/:id [delete]
 func (c *Controlador) HandlerDelete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
@@ -143,17 +152,17 @@ func (c *Controlador) HandlerDelete() gin.HandlerFunc {
 	}
 }
 
-// Producto godoc
-// @Summary producto example
-// @Description Patch producto
-// @Tags producto
-// @Param id path int true "id del producto"
+// HandlerPatch godoc
+// @Summary Update a patient by id
+// @Tags patients
 // @Accept json
 // @Produce json
+// @Param ID path int true "Patient ID to search"
+// @Param Patient body domain.Patient true "Patient information"
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /productos/:id [patch]
+// @Router /patients/:id [patch]
 func (c *Controlador) HandlerPatch() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))

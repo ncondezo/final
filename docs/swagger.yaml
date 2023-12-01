@@ -6,6 +6,21 @@ definitions:
       password:
         type: string
     type: object
+  domain.Patient:
+    properties:
+      address:
+        type: string
+      dateup:
+        type: string
+      dni:
+        type: string
+      id:
+        type: integer
+      lastname:
+        type: string
+      name:
+        type: string
+    type: object
   domain.SignupDTO:
     properties:
       email:
@@ -27,6 +42,17 @@ definitions:
       data: {}
       status:
         type: integer
+    type: object
+  web.errorResponse:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    type: object
+  web.response:
+    properties:
+      data: {}
     type: object
 info:
   contact: {}
@@ -79,4 +105,145 @@ paths:
       summary: Register a new user
       tags:
       - users
+  /patients:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Patient information
+        in: body
+        name: Patient
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Patient'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.response'
+      summary: Create a new patient
+      tags:
+      - patients
+  /patients/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Patient ID to delete
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Delete a patient by id
+      tags:
+      - patients
+    get:
+      parameters:
+      - description: Patient ID to search
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Get a patient by id
+      tags:
+      - patients
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Patient ID to search
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - description: Patient information
+        in: body
+        name: Patient
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Patient'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Update a patient by id
+      tags:
+      - patients
+    put:
+      consumes:
+      - application/json
+      description: Update producto by id
+      parameters:
+      - description: Patient ID to search
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - description: Patient information
+        in: body
+        name: Patient
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Patient'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.errorResponse'
+      summary: Update a patient by id
+      tags:
+      - patients
 swagger: "2.0"
