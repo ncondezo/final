@@ -76,6 +76,10 @@ func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 		}
 
 		patient, err := c.service.GetByID(ctx, id)
+		if errors.Is(err, patients.ErrNotFound) {
+			web.NewErrorResponse(ctx, http.StatusNotFound, "patient not found")
+			return
+		}
 		if err != nil {
 			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
 			return

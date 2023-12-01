@@ -28,7 +28,7 @@ func NewRepository(db *sql.DB) Repository {
 // Create is a method that creates a new dentist.
 func (r *repository) Create(ctx context.Context, dentist domain.Dentist) (domain.Dentist, error) {
 	var mysqlError *mysql.MySQLError
-	
+
 	statement, err := r.db.Prepare(QueryInsertDentist)
 	if err != nil {
 		return domain.Dentist{}, ErrPrepareStatement
@@ -72,11 +72,13 @@ func (r *repository) GetByID(ctx context.Context, id int) (domain.Dentist, error
 		&dentist.LastName,
 		&dentist.Registration,
 	)
-
+	if err == sql.ErrNoRows {
+		return domain.Dentist{}, ErrNotFound
+	}
 	if err != nil {
 		return domain.Dentist{}, err
 	}
-
+	
 	return dentist, nil
 }
 

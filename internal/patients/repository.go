@@ -76,11 +76,13 @@ func (r *repository) GetByID(ctx context.Context, id int) (domain.Patient, error
 		&patient.Dni,
 		&patient.DateUp,
 	)
-
+	if err == sql.ErrNoRows {
+		return domain.Patient{}, ErrNotFound
+	}
 	if err != nil {
 		return domain.Patient{}, err
 	}
-
+	
 	return patient, nil
 }
 
