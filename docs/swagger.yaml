@@ -47,6 +47,17 @@ definitions:
       surname:
         type: string
     type: object
+  domain.TurnDTO:
+    properties:
+      date:
+        type: string
+      description:
+        type: string
+      id_dentist:
+        type: integer
+      id_patient:
+        type: integer
+    type: object
   web.ErrorResponse:
     properties:
       message:
@@ -428,4 +439,145 @@ paths:
       summary: Update a patient by id
       tags:
       - patients
+  /turns:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Turn information
+        in: body
+        name: Turn
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TurnDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Create a new turn
+      tags:
+      - turns
+  /turns/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Turn ID to delete
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Delete a turn by id
+      tags:
+      - turns
+    get:
+      parameters:
+      - description: Turn ID to search
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Get a turn by id
+      tags:
+      - turns
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Turn ID to update
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - description: Turn information
+        in: body
+        name: Turn
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TurnDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Update a turn by id
+      tags:
+      - turns
+  /turns/patient/:id:
+    get:
+      parameters:
+      - description: Patient ID to search
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Get a turn by patient id
+      tags:
+      - turns
 swagger: "2.0"

@@ -21,6 +21,18 @@ func NewTurnController(service turns.Service) *Controller {
 	return &Controller{service: service}
 }
 
+// @BasePath /api/v1
+
+// HandlerCreate godoc
+// @Summary Create a new turn
+// @Tags turns
+// @Accept json
+// @Produce json
+// @Param Turn body domain.TurnDTO true "Turn information"
+// @Success 201 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
+// @Router /turns [post]
 func (c *Controller) HandlerCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -55,6 +67,15 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 	}
 }
 
+// HandlerGetByID godoc
+// @Summary Get a turn by id
+// @Tags turns
+// @Produce json
+// @Param ID path int true "Turn ID to search"
+// @Success 200 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
+// @Router /turns/:id [get]
 func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -78,6 +99,15 @@ func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 	}
 }
 
+// HandlerGetByPatientID godoc
+// @Summary Get a turn by patient id
+// @Tags turns
+// @Produce json
+// @Param ID path int true "Patient ID to search"
+// @Success 200 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
+// @Router /turns/patient/:id [get]
 func (c *Controller) HandlerGetByPatientID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -101,6 +131,17 @@ func (c *Controller) HandlerGetByPatientID() gin.HandlerFunc {
 	}
 }
 
+// HandlerUpdate godoc
+// @Summary Update a turn by id
+// @Tags turns
+// @Accept json
+// @Produce json
+// @Param ID path int true "Turn ID to update"
+// @Param Turn body domain.TurnDTO true "Turn information"
+// @Success 200 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
+// @Router /turns/:id [put]
 func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -140,6 +181,16 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 	}
 }
 
+// HandlerDelete godoc
+// @Summary Delete a turn by id
+// @Tags turns
+// @Accept json
+// @Produce json
+// @Param ID path int true "Turn ID to delete"
+// @Success 200 {object} web.SuccessResponse
+// @Failure 400 {object} web.ErrorResponse
+// @Failure 500 {object} web.ErrorResponse
+// @Router /turns/:id [delete]
 func (c *Controller) HandlerDelete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
