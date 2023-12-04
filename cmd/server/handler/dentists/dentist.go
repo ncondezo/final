@@ -29,6 +29,7 @@ func NewDentistController(service dentists.Service) *Controller {
 // @Param Dentist body domain.DentistDTO true "Dentist information"
 // @Success 201 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 409 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /dentists [post]
 func (c *Controller) HandlerCreate() gin.HandlerFunc {
@@ -68,6 +69,7 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 // @Param ID path int true "Dentist ID to search"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /dentists/:id [get]
 func (c *Controller) HandlerGetByID() gin.HandlerFunc {
@@ -102,6 +104,7 @@ func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 // @Param Dentist body domain.DentistDTO true "Dentist information"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /dentists/:id [put]
 func (c *Controller) HandlerUpdate() gin.HandlerFunc {
@@ -148,6 +151,7 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 // @Param DentistRegistry body domain.DentistRegistryDTO true "Dentist registry number"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /dentists/:id [patch]
 func (c *Controller) HandlerPatch() gin.HandlerFunc {
@@ -193,6 +197,7 @@ func (c *Controller) HandlerPatch() gin.HandlerFunc {
 // @Param ID path int true "Dentist ID to delete"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /dentists/:id [delete]
 func (c *Controller) HandlerDelete() gin.HandlerFunc {

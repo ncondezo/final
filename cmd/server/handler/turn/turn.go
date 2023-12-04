@@ -31,6 +31,7 @@ func NewTurnController(service turns.Service) *Controller {
 // @Param Turn body domain.TurnDTO true "Turn information"
 // @Success 201 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /turns [post]
 func (c *Controller) HandlerCreate() gin.HandlerFunc {
@@ -74,6 +75,7 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 // @Param ID path int true "Turn ID to search"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /turns/:id [get]
 func (c *Controller) HandlerGetByID() gin.HandlerFunc {
@@ -106,6 +108,7 @@ func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 // @Param ID path int true "Patient ID to search"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /turns/patient/:id [get]
 func (c *Controller) HandlerGetByPatientID() gin.HandlerFunc {
@@ -140,6 +143,7 @@ func (c *Controller) HandlerGetByPatientID() gin.HandlerFunc {
 // @Param Turn body domain.TurnDTO true "Turn information"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /turns/:id [put]
 func (c *Controller) HandlerUpdate() gin.HandlerFunc {
@@ -189,6 +193,7 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 // @Param ID path int true "Turn ID to delete"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /turns/:id [delete]
 func (c *Controller) HandlerDelete() gin.HandlerFunc {

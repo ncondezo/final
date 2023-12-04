@@ -29,6 +29,7 @@ func NewPatientController(service patients.Service) *Controller {
 // @Param Patient body domain.PatientDTO true "Patient information"
 // @Success 201 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 409 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /patients [post]
 func (c *Controller) HandlerCreate() gin.HandlerFunc {
@@ -68,6 +69,7 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 // @Param ID path int true "Patient ID to search"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /patients/:id [get]
 func (c *Controller) HandlerGetByID() gin.HandlerFunc {
@@ -102,6 +104,7 @@ func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 // @Param Patient body domain.PatientDTO true "Patient information"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /patients/:id [put]
 func (c *Controller) HandlerUpdate() gin.HandlerFunc {
@@ -148,6 +151,7 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 // @Param Patient body domain.PatientDniDTO true "Patient DNI"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /patients/:id [patch]
 func (c *Controller) HandlerPatch() gin.HandlerFunc {
@@ -193,6 +197,7 @@ func (c *Controller) HandlerPatch() gin.HandlerFunc {
 // @Param ID path int true "Patient ID to delete"
 // @Success 200 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /patients/:id [delete]
 func (c *Controller) HandlerDelete() gin.HandlerFunc {

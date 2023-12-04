@@ -30,6 +30,7 @@ func NewController(service user.Service) *controller {
 // @Param user body domain.SignupDTO true "User register information"
 // @Success 201 {object} web.SuccessResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 409 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /auth/signup [post]
 func (controller *controller) Signup() gin.HandlerFunc {
@@ -69,6 +70,8 @@ func (controller *controller) Signup() gin.HandlerFunc {
 // @Param user body domain.LoginDTO true "User credentials"
 // @Success 200 {object} web.LoginResponse
 // @Failure 400 {object} web.ErrorResponse
+// @Failure 403 {object} web.ErrorResponse
+// @Failure 404 {object} web.ErrorResponse
 // @Failure 500 {object} web.ErrorResponse
 // @Router /auth/login [post]
 func (controller *controller) Login() gin.HandlerFunc {
