@@ -1,0 +1,583 @@
+definitions:
+  domain.DentistDTO:
+    properties:
+      lastname:
+        type: string
+      name:
+        type: string
+      registry:
+        type: string
+    type: object
+  domain.DentistRegistryDTO:
+    properties:
+      registry:
+        type: string
+    type: object
+  domain.LoginDTO:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  domain.PatientDTO:
+    properties:
+      address:
+        type: string
+      dni:
+        type: string
+      lastname:
+        type: string
+      name:
+        type: string
+    type: object
+  domain.PatientDniDTO:
+    properties:
+      dni:
+        type: string
+    type: object
+  domain.SignupDTO:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+      surname:
+        type: string
+    type: object
+  domain.TurnDTO:
+    properties:
+      date:
+        type: string
+      description:
+        type: string
+      id_dentist:
+        type: integer
+      id_patient:
+        type: integer
+    type: object
+  web.ErrorResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  web.LoginResponse:
+    properties:
+      access_token:
+        type: string
+    type: object
+  web.SuccessResponse:
+    properties:
+      data: {}
+      status:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: API para la gestión de turnos de una clínica dental.
+  title: Desafío II - Backend Go
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Takes and verify user credentials. Returns an access token for
+        the user.
+      parameters:
+      - description: User credentials
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.LoginDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Existing user login
+      tags:
+      - users
+  /auth/signup:
+    post:
+      consumes:
+      - application/json
+      description: Takes user information and store in DB. Return saved user.
+      parameters:
+      - description: User register information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.SignupDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - users
+  /dentists:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Dentist information
+        in: body
+        name: Dentist
+        required: true
+        schema:
+          $ref: '#/definitions/domain.DentistDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Create a new dentist
+      tags:
+      - dentists
+  /dentists/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Dentist ID to delete
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Delete a dentist by id
+      tags:
+      - dentists
+    get:
+      parameters:
+      - description: Dentist ID to search
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Get a dentist by id
+      tags:
+      - dentists
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Dentist ID to update
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - description: Dentist registry number
+        in: body
+        name: DentistRegistry
+        required: true
+        schema:
+          $ref: '#/definitions/domain.DentistRegistryDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Update a dentist registry number by id
+      tags:
+      - dentists
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Dentist ID to update
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - description: Dentist information
+        in: body
+        name: Dentist
+        required: true
+        schema:
+          $ref: '#/definitions/domain.DentistDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Update a dentist by id
+      tags:
+      - dentists
+  /patients:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Patient information
+        in: body
+        name: Patient
+        required: true
+        schema:
+          $ref: '#/definitions/domain.PatientDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Create a new patient
+      tags:
+      - patients
+  /patients/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Patient ID to delete
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Delete a patient by id
+      tags:
+      - patients
+    get:
+      parameters:
+      - description: Patient ID to search
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Get a patient by id
+      tags:
+      - patients
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Patient ID to update
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - description: Patient DNI
+        in: body
+        name: Patient
+        required: true
+        schema:
+          $ref: '#/definitions/domain.PatientDniDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Update a patient dni by id
+      tags:
+      - patients
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Patient ID to update
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - description: Patient information
+        in: body
+        name: Patient
+        required: true
+        schema:
+          $ref: '#/definitions/domain.PatientDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Update a patient by id
+      tags:
+      - patients
+  /turns:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Turn information
+        in: body
+        name: Turn
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TurnDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Create a new turn
+      tags:
+      - turns
+  /turns/:id:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Turn ID to delete
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Delete a turn by id
+      tags:
+      - turns
+    get:
+      parameters:
+      - description: Turn ID to search
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Get a turn by id
+      tags:
+      - turns
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Turn ID to update
+        in: path
+        name: ID
+        required: true
+        type: integer
+      - description: Turn information
+        in: body
+        name: Turn
+        required: true
+        schema:
+          $ref: '#/definitions/domain.TurnDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Update a turn by id
+      tags:
+      - turns
+  /turns/patient/:id:
+    get:
+      parameters:
+      - description: Patient ID to search
+        in: path
+        name: ID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.ErrorResponse'
+      summary: Get a turn by patient id
+      tags:
+      - turns
+swagger: "2.0"
