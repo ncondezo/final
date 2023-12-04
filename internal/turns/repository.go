@@ -28,12 +28,12 @@ func NewRepository(db *sql.DB) Repository {
 // Create is a method that creates a new turn.
 func (r *repository) Create(ctx context.Context, turn domain.Turn) (domain.Turn, error) {
 
-	_, err := patients.NewRepository(r.db).GetByID(ctx, turn.Patient.Id)
+	patient, err := patients.NewRepository(r.db).GetByID(ctx, turn.Patient.Id)
 	if err != nil {
 		return domain.Turn{}, err
 	}
 
-	_, err = dentists.NewRepository(r.db).GetByID(ctx, turn.Dentist.Id)
+	dentist, err := dentists.NewRepository(r.db).GetByID(ctx, turn.Dentist.Id)
 	if err != nil {
 		return domain.Turn{}, err
 	}
@@ -60,6 +60,8 @@ func (r *repository) Create(ctx context.Context, turn domain.Turn) (domain.Turn,
 	}
 
 	turn.Id = int(lastId)
+	turn.Patient = patient
+	turn.Dentist = dentist
 
 	return turn, nil
 }
@@ -144,7 +146,7 @@ func (r *repository) GetByPatientID(ctx context.Context, patientId int) ([]domai
 
 // Update is a method that updates a turn by ID.
 func (r *repository) Update(ctx context.Context, turn domain.Turn, id int) (domain.Turn, error) {
-	_, err := dentists.NewRepository(r.db).GetByID(ctx, turn.Dentist.Id)
+	dentist, err := dentists.NewRepository(r.db).GetByID(ctx, turn.Dentist.Id)
 	if err != nil {
 		return domain.Turn{}, err
 	}
@@ -165,6 +167,8 @@ func (r *repository) Update(ctx context.Context, turn domain.Turn, id int) (doma
 	if err != nil {
 		return domain.Turn{}, ErrExecStatement
 	}
+
+	turn.Dentist = dentist
 
 	return turn, nil
 }

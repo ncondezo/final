@@ -51,11 +51,11 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 
 		turn, err := c.service.Create(ctx, request)
 		if errors.Is(err, patients.ErrNotFound) {
-			web.NewErrorResponse(ctx, http.StatusConflict, "patient not found")
+			web.NewErrorResponse(ctx, http.StatusNotFound, "patient not found")
 			return
 		}
 		if errors.Is(err, dentists.ErrNotFound) {
-			web.NewErrorResponse(ctx, http.StatusConflict, "dentist not found")
+			web.NewErrorResponse(ctx, http.StatusNotFound, "dentist not found")
 			return
 		}
 		if err != nil {
@@ -169,7 +169,7 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 			return
 		}
 		if errors.Is(err, dentists.ErrNotFound) {
-			web.NewErrorResponse(ctx, http.StatusConflict, "dentist not found")
+			web.NewErrorResponse(ctx, http.StatusNotFound, "dentist not found")
 			return
 		}
 		if err != nil {
