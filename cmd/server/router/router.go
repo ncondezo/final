@@ -7,8 +7,10 @@ import (
 	authController "github.com/ncondezo/final/cmd/server/handler/auth"
 	dentistController "github.com/ncondezo/final/cmd/server/handler/dentists"
 	patientController "github.com/ncondezo/final/cmd/server/handler/patient"
+	turnController "github.com/ncondezo/final/cmd/server/handler/turn"
 	dentist "github.com/ncondezo/final/internal/dentists"
 	patient "github.com/ncondezo/final/internal/patients"
+	turn "github.com/ncondezo/final/internal/turns"
 	user "github.com/ncondezo/final/internal/user"
 	"github.com/ncondezo/final/pkg/middleware"
 
@@ -38,6 +40,7 @@ func (router *router) BuildRoutes() {
 	router.buildAuthGroup()
 	router.buildDentists()
 	router.buildPatients()
+	router.buildTurns()
 }
 
 func (router *router) setApiGroup() {
@@ -97,6 +100,22 @@ func (router *router) buildPatients() {
 		patientGroup.PUT("/:id", middleware.Authorization(), controller.HandlerUpdate())
 		patientGroup.PATCH("/:id", middleware.Authorization(), controller.HandlerPatch())
 		patientGroup.DELETE("/:id", middleware.Authorization(), controller.HandlerDelete())
+	}
+
+}
+func (router *router) buildTurns() {
+
+	repository := turn.NewRepository(router.db)
+	service := turn.NewTurnService(repository)
+	controller := turnController.NewTurnController(service)
+
+	turnGroup := router.apiGroup.Group("/turns")
+	{
+		turnGroup.POST("", middleware.Authorization(), controller.HandlerCreate())
+		turnGroup.GET("/:id", controller.HandlerGetByID())
+		turnGroup.GET("/patient/:patientId", controller.HandlerGetByPatientID())
+		turnGroup.PUT("/:id", middleware.Authorization(), controller.HandlerUpdate())
+		turnGroup.DELETE("/:id", middleware.Authorization(), controller.HandlerDelete())
 	}
 
 }

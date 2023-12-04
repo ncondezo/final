@@ -40,3 +40,18 @@ CREATE TABLE IF NOT EXISTS patients
         UNIQUE (dni)
         
 );
+
+CREATE TABLE IF NOT EXISTS turns
+(
+    id          INT NOT NULL AUTO_INCREMENT,
+    date        DATE NOT NULL,
+    description VARCHAR(250) NOT NULL,
+    patients_id int NOT NULL,
+    dentists_id int NOT NULL,
+    CONSTRAINT turns_id
+        PRIMARY KEY (id),
+    CONSTRAINT patients_id
+        FOREIGN KEY (patients_id) REFERENCES patients (id),
+    CONSTRAINT dentists_id
+    FOREIGN KEY (dentists_id) REFERENCES dentists (id)
+);
