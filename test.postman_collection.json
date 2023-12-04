@@ -84,7 +84,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE0NTI1NTIsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.-rjPpQUut7TpWgHFoZfwx8GugfMclueUaQV3yw5hR9Y",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE3MTc5MTgsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.aoKY-EFZ_rDMIFISnsv0luV3xbzEaofA9BXIHM-jRHg",
 									"type": "string"
 								}
 							]
@@ -124,7 +124,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE0NTE3NjcsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.qr7wmUQLQk3PFDNR2R1mZuFQKD_4wZdhgJSCHCOEzqc",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE3MTc5MTgsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.aoKY-EFZ_rDMIFISnsv0luV3xbzEaofA9BXIHM-jRHg",
 									"type": "string"
 								}
 							]
@@ -133,7 +133,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"name\": \"Richard\",\r\n\t\"lastname\": \"Huges\",\r\n\t\"registry\": \"\"\r\n}",
+							"raw": "{\r\n\t\"name\": \"Richard\",\r\n\t\"lastname\": \"Huges\",\r\n\t\"registry\": \" \"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -171,7 +171,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE0NTE3NjcsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.qr7wmUQLQk3PFDNR2R1mZuFQKD_4wZdhgJSCHCOEzqc",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE3MTc5MTgsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.aoKY-EFZ_rDMIFISnsv0luV3xbzEaofA9BXIHM-jRHg",
 									"type": "string"
 								}
 							]
@@ -211,7 +211,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/v1/dentists/search/id",
+					"name": "/api/v1/dentists",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -239,7 +239,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/v1/dentists/:id",
+					"name": "/api/v1/dentists",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -289,7 +289,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE0NTI1NTIsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.-rjPpQUut7TpWgHFoZfwx8GugfMclueUaQV3yw5hR9Y",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE3MTc5MTgsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.aoKY-EFZ_rDMIFISnsv0luV3xbzEaofA9BXIHM-jRHg",
 									"type": "string"
 								}
 							]
@@ -329,7 +329,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE0NTI1NTIsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.-rjPpQUut7TpWgHFoZfwx8GugfMclueUaQV3yw5hR9Y",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE3MTc5MTgsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.aoKY-EFZ_rDMIFISnsv0luV3xbzEaofA9BXIHM-jRHg",
 									"type": "string"
 								}
 							]
@@ -338,7 +338,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"name\": \"Darryl\",\r\n\t\"lastname\": \"Brown\",\r\n\t\"address\": \"7th Avenue\",\r\n\t\"dni\": \"\"\r\n}",
+							"raw": "{\r\n\t\"name\": \"Darryl\",\r\n\t\"lastname\": \"Brown\",\r\n\t\"address\": \"7th Avenue\",\r\n\t\"dni\": \" \"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -376,7 +376,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE0NTI1NTIsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.-rjPpQUut7TpWgHFoZfwx8GugfMclueUaQV3yw5hR9Y",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE3MTc5MTgsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.aoKY-EFZ_rDMIFISnsv0luV3xbzEaofA9BXIHM-jRHg",
 									"type": "string"
 								}
 							]
@@ -445,6 +445,193 @@
 				},
 				{
 					"name": "/api/v1/patients",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE0NTI1NTIsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.-rjPpQUut7TpWgHFoZfwx8GugfMclueUaQV3yw5hR9Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/patients/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"patients",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "turns",
+			"item": [
+				{
+					"name": "/api/v1/turns",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE3MTc5MTgsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.aoKY-EFZ_rDMIFISnsv0luV3xbzEaofA9BXIHM-jRHg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"date\": \"2023-12-10T09:30:00Z\",\r\n\t\"description\": \"Esta es la descripción\",\r\n\t\"id_patient\": 1,\r\n\t\"id_dentist\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/turns",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"turns"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/turns",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJleHAiOjE3MDE3MTkzODEsImlzcyI6ImRlc2FmaW8yLWJhY2tlbmQifQ.X6xDe1B3h3zPoiKpPR3KEAdBflvvNFLD5p-uZm-quAo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"date\": \"2023-12-10T14:00:00Z\",\r\n\t\"description\": \"Esta es una nueva descripción\",\r\n\t\"id_patient\": 50,\r\n\t\"id_dentist\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/turns/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"turns",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/turns",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/turns/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"turns",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/turns/patient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/turns/patient/:patientId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"turns",
+								"patient",
+								":patientId"
+							],
+							"variable": [
+								{
+									"key": "patientId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/api/v1/turns",
 					"request": {
 						"auth": {
 							"type": "bearer",
