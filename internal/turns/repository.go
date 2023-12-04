@@ -5,8 +5,9 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/go-sql-driver/mysql"
+	"github.com/ncondezo/final/internal/dentists"
 	"github.com/ncondezo/final/internal/domain"
+	"github.com/ncondezo/final/internal/patients"
 )
 
 var (
@@ -14,16 +15,10 @@ var (
 	ErrExecStatement    = errors.New("error exec statement")
 	ErrLastInsertedId   = errors.New("error last inserted id")
 	ErrNotFound         = errors.New("error not found turn")
-	ErrAlreadyExists    = errors.New("error turn already exists")
 )
 
 type repository struct {
 	db *sql.DB
-}
-
-// Patch implements Repository.
-func (*repository) Patch(ctx context.Context, turn domain.Turn, id int) (domain.Turn, error) {
-	panic("unimplemented")
 }
 
 func NewRepository(db *sql.DB) Repository {
@@ -31,9 +26,17 @@ func NewRepository(db *sql.DB) Repository {
 }
 
 // Create is a method that creates a new turn.
-
 func (r *repository) Create(ctx context.Context, turn domain.Turn) (domain.Turn, error) {
-	var mysqlError *mysql.MySQLError
+
+	_, err := patients.NewRepository(r.db).GetByID(ctx, turn.Patient.Id)
+	if err != nil {
+		return domain.Turn{}, err
+	}
+
+	_, err = dentists.NewRepository(r.db).GetByID(ctx, turn.Dentist.Id)
+	if err != nil {
+		return domain.Turn{}, err
+	}
 
 	statement, err := r.db.Prepare(QueryInsertTurn)
 	if err != nil {
@@ -42,20 +45,13 @@ func (r *repository) Create(ctx context.Context, turn domain.Turn) (domain.Turn,
 	defer statement.Close()
 
 	result, err := statement.Exec(
-		turn.IdDentist,
-		turn.IdDentist,
 		turn.Date,
 		turn.Description,
+		turn.Patient.Id,
+		turn.Dentist.Id,
 	)
-
-	ok := errors.As(err, &mysqlError)
-	if ok {
-		switch mysqlError.Number {
-		case 1062:
-			return domain.Turn{}, ErrAlreadyExists
-		default:
-			return domain.Turn{}, ErrExecStatement
-		}
+	if err != nil {
+		return domain.Turn{}, ErrExecStatement
 	}
 
 	lastId, err := result.LastInsertId()
@@ -70,17 +66,29 @@ func (r *repository) Create(ctx context.Context, turn domain.Turn) (domain.Turn,
 
 // GetByID is a method that returns a turn by ID.
 func (r *repository) GetByID(ctx context.Context, id int) (domain.Turn, error) {
-	row := r.db.QueryRow(QUeryGetTurnById, id)
+	var ignored int
+	var ignored2 int
+	row := r.db.QueryRow(QueryGetTurnById, id)
 
 	var turn domain.Turn
 	err := row.Scan(
 		&turn.Id,
-		&turn.IdDentist,
-		&turn.IdPatient,
 		&turn.Date,
 		&turn.Description,
+		&ignored,
+		&ignored2,
+		&turn.Patient.Id,
+		&turn.Patient.Name,
+		&turn.Patient.Lastname,
+		&turn.Patient.Address,
+		&turn.Patient.Dni,
+		&turn.Patient.DateUp,
+		&turn.Dentist.Id,
+		&turn.Dentist.Name,
+		&turn.Dentist.LastName,
+		&turn.Dentist.Registration,
 	)
-	if err == sql.ErrNoRows {
+	if errors.Is(err, sql.ErrNoRows) {
 		return domain.Turn{}, ErrNotFound
 	}
 	if err != nil {
@@ -90,19 +98,67 @@ func (r *repository) GetByID(ctx context.Context, id int) (domain.Turn, error) {
 	return turn, nil
 }
 
+// GetByPatientID is a method that returns a list of turns by PatientID.
+func (r *repository) GetByPatientID(ctx context.Context, patientId int) ([]domain.Turn, error) {
+	turns := make([]domain.Turn, 0)
+
+	_, err := patients.NewRepository(r.db).GetByID(ctx, patientId)
+	if err != nil {
+		return []domain.Turn{}, err
+	}
+
+	founds, err := r.db.Query(QueryGetTurnByPatient, patientId)
+	defer founds.Close()
+	if err != nil {
+		return []domain.Turn{}, ErrExecStatement
+	}
+
+	for founds.Next() {
+		var turn domain.Turn
+		var ignored int
+		err := founds.Scan(
+			&turn.Id,
+			&turn.Date,
+			&turn.Description,
+			&ignored,
+			&ignored,
+			&turn.Patient.Id,
+			&turn.Patient.Name,
+			&turn.Patient.Lastname,
+			&turn.Patient.Address,
+			&turn.Patient.Dni,
+			&turn.Patient.DateUp,
+			&turn.Dentist.Id,
+			&turn.Dentist.Name,
+			&turn.Dentist.LastName,
+			&turn.Dentist.Registration,
+		)
+		if err != nil {
+			return []domain.Turn{}, ErrExecStatement
+		}
+		turns = append(turns, turn)
+	}
+
+	return turns, nil
+}
+
 // Update is a method that updates a turn by ID.
 func (r *repository) Update(ctx context.Context, turn domain.Turn, id int) (domain.Turn, error) {
-	statement, err := r.db.Prepare(QuertyUpdateTurn)
+	_, err := dentists.NewRepository(r.db).GetByID(ctx, turn.Dentist.Id)
+	if err != nil {
+		return domain.Turn{}, err
+	}
+
+	statement, err := r.db.Prepare(QueryUpdateTurn)
 	if err != nil {
 		return domain.Turn{}, ErrPrepareStatement
 	}
 	defer statement.Close()
 
 	_, err = statement.Exec(
-		turn.IdDentist,
-		turn.IdPatient,
 		turn.Date,
 		turn.Description,
+		turn.Dentist.Id,
 		id,
 	)
 

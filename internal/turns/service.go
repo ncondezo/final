@@ -11,18 +11,13 @@ import (
 type Service interface {
 	Create(ctx context.Context, dto domain.TurnDTO) (domain.Turn, error)
 	GetByID(ctx context.Context, id int) (domain.Turn, error)
+	GetByPatientID(ctx context.Context, patientId int) ([]domain.Turn, error)
 	Update(ctx context.Context, dto domain.TurnDTO, id int) (domain.Turn, error)
-	Patch(ctx context.Context, dto domain.Turn, id int) (domain.Turn, error)
 	Delete(ctx context.Context, id int) error
 }
 
 type service struct {
 	repository Repository
-}
-
-// Patch implements Service.
-func (*service) Patch(ctx context.Context, dto domain.Turn, id int) (domain.Turn, error) {
-	panic("unimplemented")
 }
 
 func NewTurnService(repository Repository) Service {
@@ -32,10 +27,14 @@ func NewTurnService(repository Repository) Service {
 // Create is a method that create a new turn.
 func (s *service) Create(ctx context.Context, dto domain.TurnDTO) (domain.Turn, error) {
 	turn := domain.Turn{
-		IdDentist:   dto.IdDentist,
-		IdPatient:   dto.IdPatient,
 		Date:        time.Now(),
 		Description: dto.Description,
+		Patient: domain.Patient{
+			Id: dto.IdPatient,
+		},
+		Dentist: domain.Dentist{
+			Id: dto.IdDentist,
+		},
 	}
 	turn, err := s.repository.Create(ctx, turn)
 	if err != nil {
@@ -55,15 +54,27 @@ func (s *service) GetByID(ctx context.Context, id int) (domain.Turn, error) {
 	return turn, nil
 }
 
+// GetByPatientID is a method that return a turn by ID.
+func (s *service) GetByPatientID(ctx context.Context, patientId int) ([]domain.Turn, error) {
+	turns, err := s.repository.GetByPatientID(ctx, patientId)
+	if err != nil {
+		log.Println("[TurnsService][GetByID] error getting turns by patient", err)
+		return []domain.Turn{}, err
+	}
+	return turns, nil
+}
+
 // Update is a method that update a turn by ID.
 func (s *service) Update(ctx context.Context, dto domain.TurnDTO, id int) (domain.Turn, error) {
 	turn, err := s.GetByID(ctx, id)
 	if err != nil {
 		return domain.Turn{}, err
 	}
-	turn.IdDentist = dto.IdDentist
-	turn.IdPatient = dto.IdPatient
+	turn.Date = dto.Date
 	turn.Description = dto.Description
+	turn.Dentist = domain.Dentist{
+		Id: dto.IdDentist,
+	}
 
 	turn, err = s.repository.Update(ctx, turn, id)
 	if err != nil {

@@ -6,7 +6,9 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/ncondezo/final/internal/dentists"
 	"github.com/ncondezo/final/internal/domain"
+	"github.com/ncondezo/final/internal/patients"
 	"github.com/ncondezo/final/internal/turns"
 	"github.com/ncondezo/final/pkg/web"
 )
@@ -36,8 +38,12 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 		}
 
 		turn, err := c.service.Create(ctx, request)
-		if errors.Is(err, turns.ErrAlreadyExists) {
-			web.NewErrorResponse(ctx, http.StatusConflict, "turn already exists")
+		if errors.Is(err, patients.ErrNotFound) {
+			web.NewErrorResponse(ctx, http.StatusConflict, "patient not found")
+			return
+		}
+		if errors.Is(err, dentists.ErrNotFound) {
+			web.NewErrorResponse(ctx, http.StatusConflict, "dentist not found")
 			return
 		}
 		if err != nil {
@@ -61,6 +67,29 @@ func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 		turn, err := c.service.GetByID(ctx, id)
 		if errors.Is(err, turns.ErrNotFound) {
 			web.NewErrorResponse(ctx, http.StatusNotFound, "turn not found")
+			return
+		}
+		if err != nil {
+			web.NewErrorResponse(ctx, http.StatusInternalServerError, "internal server error")
+			return
+		}
+
+		web.NewSuccessResponse(ctx, http.StatusOK, turn)
+	}
+}
+
+func (c *Controller) HandlerGetByPatientID() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+
+		patientId, err := strconv.Atoi(ctx.Param("patientId"))
+		if err != nil {
+			web.NewErrorResponse(ctx, http.StatusBadRequest, "invalid patient id")
+			return
+		}
+
+		turn, err := c.service.GetByPatientID(ctx, patientId)
+		if errors.Is(err, patients.ErrNotFound) {
+			web.NewErrorResponse(ctx, http.StatusNotFound, "patient not found")
 			return
 		}
 		if err != nil {
@@ -96,6 +125,10 @@ func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 		turn, err := c.service.Update(ctx, request, id)
 		if errors.Is(err, turns.ErrNotFound) {
 			web.NewErrorResponse(ctx, http.StatusNotFound, "turn not found")
+			return
+		}
+		if errors.Is(err, dentists.ErrNotFound) {
+			web.NewErrorResponse(ctx, http.StatusConflict, "dentist not found")
 			return
 		}
 		if err != nil {

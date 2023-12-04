@@ -113,8 +113,8 @@ func (router *router) buildTurns() {
 	{
 		turnGroup.POST("", middleware.Authorization(), controller.HandlerCreate())
 		turnGroup.GET("/:id", controller.HandlerGetByID())
+		turnGroup.GET("/patient/:patientId", controller.HandlerGetByPatientID())
 		turnGroup.PUT("/:id", middleware.Authorization(), controller.HandlerUpdate())
-		//turnGroup.PATCH("/:id", middleware.Authorization(), controller.HandlerPatch())
 		turnGroup.DELETE("/:id", middleware.Authorization(), controller.HandlerDelete())
 	}
 
